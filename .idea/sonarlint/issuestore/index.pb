@@ -21,6 +21,3 @@ X
 (src/main/webapp/admin_list_companies.jsp,2/7/278001358a258912320025bfb3ee68e6e924d281
 T
 $src/main/webapp/admin_list_users.jsp,7/5/756d4bfeaddb467b8936c048305ad061d973c379
-:
-
-.gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
