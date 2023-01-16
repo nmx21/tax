@@ -1,8 +1,9 @@
-package com.tax.logic.parser;
+package com.tax.logic.parser.impl;
 
 import com.tax.db.entity.Company;
 import com.tax.db.entity.Report;
 import com.tax.db.entity.ReportType;
+import com.tax.logic.parser.FileReport;
 import org.json.simple.parser.ParseException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -12,11 +13,10 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.io.IOException;
 
 public class XMLRead implements FileReport {
     @Override
-    public Report parseFile(String fileName) throws IOException, ParseException {
+    public Report parseFile(String fileName) throws ParseException {
         Report fileReport = new Report();
         try {
             File file = new File(fileName);

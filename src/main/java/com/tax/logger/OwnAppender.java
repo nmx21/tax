@@ -1,4 +1,4 @@
-package com.github.romankh3.logginglecture.appender;
+package com.tax.logger;
 
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;

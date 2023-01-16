@@ -1,0 +1,12 @@
+<Context>
+    <Resource name="jdbc/tax_service"
+              auth="Container"
+              type="javax.sql.DataSource"
+              username="maks"
+              password="maks"
+              driverClassName="com.mysql.cj.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/tax_service?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8"
+              validationQuery="select 1"
+              maxTotal="10"
+              maxIdle="4"/>
+</Context>

@@ -1,4 +1,4 @@
-package com.tax.command.impl;
+package com.tax.command.impl.all;
 
 import com.tax.command.Command;
 import com.tax.exception.DBException;
@@ -19,9 +19,7 @@ public class EditProfileCommand implements Command {
         user.setEmail(req.getParameter("email"));
         user.setPassword(req.getParameter("password"));
 
-        if (currentUser.getEmail().equals(user.getEmail()) || (currentUser.getPassword().equals(user.getPassword()) && "".equals(user.getPassword()))) {
-            //System.out.println("Old data not new data...");
-        } else {
+        if (!currentUser.getEmail().equals(user.getEmail()) && (!currentUser.getPassword().equals(user.getPassword()) || !"".equals(user.getPassword()))) {
             UserManager.getInstance().updateUser(user);
         }
         if ("admin".equals(req.getSession().getAttribute("status")))

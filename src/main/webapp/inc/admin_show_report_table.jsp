@@ -38,17 +38,5 @@
                             <td>Статус звіту</td>
                             <td>${sessionScope.report_info.reportStatus.type}</td>
                         </tr>
-                        <c:set var="status" value="${sessionScope.report_info.reportStatus.id}"/>
-                        <c:if test="${(status == '2')}">
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <h4>Оновити звіт:</h4>
-                                    <form action="patch" method="post" enctype="multipart/form-data">
-                                        <input type="file" name="file" value="" accept=".xml,.json" />
-                                        <input type="submit" value="Завантажити оновлення" />
-                                    </form>
-                                </td>
-                            </tr>
-                        </c:if>
+
                     </table>

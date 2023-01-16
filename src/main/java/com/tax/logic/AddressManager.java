@@ -1,82 +1,71 @@
 package com.tax.logic;
 
+import com.tax.Controller;
 import com.tax.db.ConnectionPool;
-import com.tax.db.DBException;
+import com.tax.exception.DBException;
 import com.tax.db.entity.Address;
-import com.tax.db.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
-public class AddreddManager {
-    private static AddreddManager instance;
+public class AddressManager {
+    private static AddressManager instance;
+    private final ConnectionPool connectionPool;
 
-    public static synchronized AddreddManager getInstance() {
+    private static final Logger log = LoggerFactory.getLogger(AddressManager.class.getName());
+
+    private AddressManager() {
+        connectionPool = ConnectionPool.getInstance();
+    }
+
+    public static synchronized AddressManager getInstance() {
         if (instance == null) {
-            instance = new AddreddManager();
+            instance = new AddressManager();
         }
         return instance;
     }
 
-    private AddreddManager() {
-        connectionPool = ConnectionPool.getInstance();
-    }
-
-    private ConnectionPool connectionPool;
-
-    public Address findAdress(String username) throws DBException {
+    public Address findAddressById(int companyId) throws DBException {
         try (Connection con = connectionPool.getConnection()) {
-            return connectionPool.findAddress(con, username);
+            return connectionPool.findAddressByCompanyId(con, companyId);
         } catch (SQLException ex) {
-            // (1) write to log: log.error(..., ex);
-            ex.printStackTrace();
-
-            // (2) throw your own exception
-            throw new DBException("Cannot find address", ex);
+            log.error("Error in findAddressById  ", ex);
+            throw new DBException("Cannot find address by id", ex);
         }
     }
 
-    public void createAddress(Address... addresses) throws DBException {
+    public void createAddress(Address address) throws DBException {
         Connection con = null;
         try {
             con = connectionPool.getConnection();
             con.setTransactionIsolation(
                     Connection.TRANSACTION_READ_COMMITTED);
             con.setAutoCommit(false);
-
-            for (Address address : addresses) {
-                connectionPool.createAddress(con, address);
-            }
-
+            connectionPool.createAddress(con, address);
             con.commit();
         } catch (SQLException ex) {
-            // (1) write to log: log.error("Cannot create users", ex);
-            ex.printStackTrace();
-
-            // (2)
+            log.error("Error in createAddress  ", ex);
             if (con != null) {
                 try {
                     con.rollback();
                 } catch (SQLException e) {
-                    // write to log
+                    log.error("Error in createAddress rollback  ", ex);
                     e.printStackTrace();
                 }
             }
-
-            // (3) throw your own exception
             throw new DBException("Cannot create address ", ex);
         }
     }
 
-    public List<User> findAllUsers() throws DBException {
+    public List<Address> findAllAddress() throws DBException {
         try (Connection con = connectionPool.getConnection()) {
-            return connectionPool.findAllUsers(con);
+            return connectionPool.findAllAddress(con);
         } catch (SQLException ex) {
-            // (1) write to log: log.error(..., ex);
-            ex.printStackTrace();
-
-            // (2) throw your own exception
+            log.error("Error in findAllAddress  ", ex);
             throw new DBException("Cannot find all addresses ", ex);
         }
     }

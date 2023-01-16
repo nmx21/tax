@@ -1,4 +1,4 @@
-package com.tax.command.impl;
+package com.tax.command.impl.all;
 
 import com.tax.exception.DBException;
 

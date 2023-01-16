@@ -1,4 +1,4 @@
-package com.tax.command.impl;
+package com.tax.command.impl.all;
 
 import com.tax.command.Command;
 import com.tax.exception.DBException;
@@ -11,11 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CreateUsersCommand implements Command {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
-        User u1 = new User();
-        u1.setUsername(req.getParameter("login1"));
-        u1.setPassword(req.getParameter("password1"));
-        UserManager.getInstance().createUsers(u1);
-
+        UserManager.getInstance().createUsers(new User(req.getParameter("login"),req.getParameter("password")));
         return "controller?command=listUsers";
     }
 }

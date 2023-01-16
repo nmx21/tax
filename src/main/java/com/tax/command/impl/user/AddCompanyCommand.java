@@ -1,4 +1,4 @@
-package com.tax.command.impl;
+package com.tax.command.impl.user;
 
 import com.tax.command.Command;
 import com.tax.exception.DBException;
@@ -20,8 +20,8 @@ public class AddCompanyCommand implements Command {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+
         Address address = new Address();
-        // todo builder
         address.setCountry(req.getParameter("country"));
         address.setRegion(req.getParameter("region"));
         address.setCity(req.getParameter("city"));

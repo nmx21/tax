@@ -15,13 +15,10 @@
         <title>test</title>
     </head>
     <body>
-        SHOW REPORT INFO
+        <jsp:include page="./inc/client_menu.jsp"/>
         <jsp:include page="./inc/header.jsp"/>
         <div class="container">
             <div class="row">
-                <div class="col-2">
-                    <jsp:include page="./inc/client_menu.jsp"/>
-                </div>
                 <div class="col-9">
                     <jsp:include page="./inc/show_report_table.jsp"/>
                     <span class="d-block p-2 bg-primary"><a class="text-white" href = "controller?command=userReportList">Повернутися</a></span>

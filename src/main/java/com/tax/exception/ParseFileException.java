@@ -1,4 +1,4 @@
-package com.tax.db;
+package com.tax.exception;
 
 import java.io.IOException;
 
