@@ -1,5 +1,12 @@
 <html>
 <body>
-<h2>Hello World!</h2>
+
+	<form action="controller" method="post">
+		<input name="command" value="login" type="hidden">
+		<input name="login"><br>
+		<input name="password" type="password"><br>
+		<input value="Login" type="submit">
+	</form>
+
 </body>
 </html>
