@@ -11,11 +11,10 @@
 <!DOCTYPE html>
 <html lang="${language}">
 
-
 <html>
     <head>
         <jsp:include page="./inc/head.jsp"/>
-        <title>test</title>
+        <title>Index page</title>
     </head>
     <body>
         <jsp:include page="./inc/header.jsp"/>

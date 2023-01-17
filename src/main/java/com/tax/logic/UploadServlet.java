@@ -22,11 +22,12 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
 @MultipartConfig
-@WebServlet("/upload")
+@WebServlet("/update")
 public class UploadServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(UploadServlet.class.getName());
 
@@ -39,6 +40,7 @@ public class UploadServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        log.info("Upload execute, time= {}",  LocalDateTime.now());
         try {
             Part filePart = req.getPart("file");
             String fileName = filePart.getSubmittedFileName();

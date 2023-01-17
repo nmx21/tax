@@ -1,6 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${not empty param.language ?
+  param.language : not empty language ? language :
+  pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="text" var="msg" />
+<fmt:requestEncoding value="UTF-8" />
+<!DOCTYPE html>
+<html lang="${language}">
+
 
 <c:choose>
 <c:when test="${sessionScope.isAuth!='true'}">
@@ -30,7 +41,7 @@
 <html>
     <head>
         <jsp:include page="./inc/head.jsp"/>
-        <title>test</title>
+        <title>Report list</title>
     </head>
     <body>
         <jsp:include page="./inc/client_menu.jsp"/>
@@ -40,44 +51,13 @@
                 <p class="text-danger">${sessionScope.message}</p>
                 <div class="col-9">
                     <span class="d-block p-1 bg-primary">
-                        <h4>Завантаження звіту:</h4>
+                        <h4><fmt:message key="uploadreport" bundle="${msg}"/>:</h4>
                         <form action="update" method="post" enctype="multipart/form-data">
                             <input type="file" name="file" value="" accept=".xml,.json" />
-                            <input type="submit" value="Завантажити" />
+                            <input type="submit" value="<fmt:message key="upload" bundle="${msg}"/>" />
                         </form>
                     </span>
                     <br>
-                    <!--
-                    <form>
-                        <div class="mb-3">
-                            <label for="date_from" class="form-label">Дата з:</label>
-                            <input type="date" class="form-control" id="date_from" >
-                        </div>
-                        <div class="mb-3">
-                             <label for="date_for" class="form-label">Дата до:</label>
-                             <input type="date" class="form-control" id="date_for" >
-                        </div>
-                        <div class="mb-3">
-                            <label for="type" class="form-label">Тип звіту</label>
-                            <select class="form-control" id="type" required>
-                                <option value = "0">Усі</option>
-                                <c:forEach var="row" items="${result_select_company_type_list.rows}">
-                                    <option value =${row.id}>${row.report_type}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="status" class="form-label">Статус</label>
-                            <select class="form-control" id="status" required>
-                                <option value="0" selected>Усі</option>
-                                <c:forEach var="row" items="${result_select_report_status_list.rows}">
-                                	<option value =${row.id}>${row.name}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Пошук</button>
-                    </form>
--->
                 <jsp:include page="./inc/user_reports_table.jsp"/>
             </div>
         </div>

@@ -55,7 +55,6 @@ public class UploadPatchServlet extends HttpServlet {
             String typeFile = getFileExtension(file);
             if ("xml".equals(typeFile)) {
                 XMLRead xmlRead = new XMLRead();
-                System.out.println("========== " + xmlRead);
                 ReportManager.getInstance().updateReport(currentUser, xmlRead.parseFile(pathToFile));
                 file.delete();
             } else if ("json".equals(typeFile)) {

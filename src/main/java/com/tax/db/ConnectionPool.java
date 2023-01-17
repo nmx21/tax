@@ -24,7 +24,7 @@ public class ConnectionPool {
     private static final String FIND_ALL_USERS = "select * from user";
     private static final String FIND_ALL_REPORTS = "select * from report";
     private static final String UPDATE_EMAIL_FOR_USER = "update user set email = ? where id = ?";
-    private static final String UPDATE_PASS_FOR_USER = "update user set email = ? where id = ?";
+    private static final String UPDATE_PASS_FOR_USER = "update user set password = ? where id = ?";
     private static final String INSERT_ADDRESS = "insert into address (country, state, city, street, building, building_letter, office, office_letter) values (?,?,?,?,?,?,?,?) ";
     private static final String FIND_ALL_ADDRESS = "select * from address where ";
     private static final String FIND_ADDRESS_BY_ID = "" + "select * from address where id = ?";
@@ -41,7 +41,7 @@ public class ConnectionPool {
     private static final String FIND_REPORT_TYPE_BY_ID = "select * FROM report_type where id= ?";
     private static final String FIND_REPORT_STATUS_BY_ID = "select * FROM report_status where id= ?";
     private static final String INSERT_REPORT = "insert into report (company_data_id, report_type_id, financial_income, tax_amount, description, user_id, report_body, status_id) values (? , ?,  ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_REPORT = "update report set (company_data_id = ?, report_type_id = ?, financial_income = ?, tax_amount = ?, description = ?, status_id = ?) where id = ?";
+    private static final String UPDATE_REPORT = "update report set company_data_id = ?, report_type_id = ?, financial_income = ?, tax_amount = ?, description = ?, status_id = ? where id = ?";
     private static final String FIND_ALL_REPORTS_BY_USER = "select * from report where user_id = ? ";
     private static final String FIND_REPORT_BY_ID = "select * from report where id = ?";
     private static final String FIND_ALL_REPORTS_BY_COMPANY_ID = "select * from report where company_data_id = ?";

@@ -2,9 +2,11 @@
 <html>
     <head>
         <jsp:include page="./inc/head.jsp"/>
-        <title>test</title>
+        <title>Error</title>
     </head>
     <body>
+        <hr>
+        Error, try again...
         ${sessionScope.ex.message}
            <hr>
         ${ex.printStackTrace()}

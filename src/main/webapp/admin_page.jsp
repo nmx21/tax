@@ -22,14 +22,11 @@
         <jsp:include page="./inc/head.jsp"/>
         <title>test</title>
     </head>
-<body>
-	ADMIN
-    <jsp:include page="./inc/header.jsp"/>
-    <jsp:include page="./inc/admin_menu.jsp"/>
-    <br>
-    <div class=" text-center text-success"><fmt:message key="welcome" bundle="${msg}"/></div>
-
-
+    <body>
+        <jsp:include page="./inc/header.jsp"/>
+        <jsp:include page="./inc/admin_menu.jsp"/>
+        <br>
+        <div class=" text-center text-success"><fmt:message key="welcome" bundle="${msg}"/></div>
         <jsp:include page="./inc/footer.jsp"/>
     </body>
 </html>

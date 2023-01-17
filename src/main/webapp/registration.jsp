@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:set var="language" value="${not empty param.language ?
   param.language : not empty language ? language :
@@ -12,7 +14,7 @@
 <html>
     <head>
         <jsp:include page="./inc/head.jsp"/>
-        <title>test</title>
+        <title>Registration page</title>
     </head>
     <body>
         <jsp:include page="./inc/header.jsp"/>
@@ -26,17 +28,17 @@
                                 <input name="command" value="login" type="hidden">
                             </div>
                             <div class="mb-3">
-                                <label for="login" class="form-label">Логін1</label>
+                                <label for="login" class="form-label"><fmt:message key="login" bundle="${msg}"/></label>
                                 <input type="text" class="form-control" name="login" id="login" minlength="4" maxlength="10" required>
                             </div>
                             <div class="mb-3">
-                                <label for="password" class="form-label">Пароль</label>
+                                <label for="password" class="form-label"><fmt:message key="password" bundle="${msg}"/></label>
                                 <input type="password" class="form-control" name="password" id="password" minlength="4" maxlength="10" required>
                             </div>
-                            <input value="Увійти" type="submit">
+                            <input value="<fmt:message key="enter" bundle="${msg}"/>" type="submit">
                         </form>
                         <span class="d-block p-2 bg-primary">
-                            <a class="text-white" href = "controller?command=registrationForm">Реєстрація</a>
+                            <a class="text-white" href = "controller?command=registrationForm"><fmt:message key="registration" bundle="${msg}"/></a>
                         </span>
                     </div>
                 <div class="col-sm"></div>

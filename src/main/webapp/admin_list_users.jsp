@@ -10,10 +10,9 @@
 <html>
     <head>
         <jsp:include page="./inc/head.jsp"/>
-        <title>test</title>
+        <title>Users list</title>
     </head>
     <body>
-	    ADMIN SHOW USERS
         <jsp:include page="./inc/header.jsp"/>
         <jsp:include page="./inc/admin_menu.jsp"/>
         <br>

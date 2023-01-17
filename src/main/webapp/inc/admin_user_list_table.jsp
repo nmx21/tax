@@ -1,6 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${not empty param.language ?
+  param.language : not empty language ? language :
+  pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="text" var="msg" />
+<fmt:requestEncoding value="UTF-8" />
+<!DOCTYPE html>
+<html lang="${language}">
 
 <sql:query var="result_select_company_type_list" dataSource="jdbc/tax_service">
 	select * from company_type;
@@ -14,10 +24,10 @@
         <thead>
             <tr>
                 <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" scope="col">#</th>
-                <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Логін</th>
-                <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Можливості</th>
-                <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Дата створення</th>
-                <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Дії</th>
+                <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1"><fmt:message key="login" bundle="${msg}"/></th>
+                <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1"><fmt:message key="cando" bundle="${msg}"/></th>
+                <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1"><fmt:message key="createdate" bundle="${msg}"/></th>
+                <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1"><fmt:message key="do" bundle="${msg}"/></th>
             </tr>
         </thead>
         <tbody>
@@ -27,10 +37,10 @@
                     <td>${row.username}</td>
                     <td>${row.name}</td>
                     <td>${row.create_time}</td>
-                    <td><a href="controller?command=showUserInfo&id=${row.id}">Картка користувача</a></td>
+                    <td><a href="controller?command=showUserInfo&id=${row.id}"><fmt:message key="usercard" bundle="${msg}"/></a></td>
                 </tr>
             </c:forEach>
         </tbody>
     </table>
 </div>
-<a href ="controller?command=listUsers">Оновити</a><br />
+<a href ="controller?command=listUsers"><fmt:message key="refresh" bundle="${msg}"/></a><br />

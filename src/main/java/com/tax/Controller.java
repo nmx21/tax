@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
@@ -36,7 +35,6 @@ public class Controller extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String address = "error.jsp";
         String commandName = req.getParameter("command");
-        log.info("Command {} execute, time= {}", commandName, LocalDateTime.now());
         Command command = CommandContainer.getCommand(commandName);
         try {
             address = command.execute(req, resp);

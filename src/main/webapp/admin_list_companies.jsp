@@ -1,6 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${not empty param.language ?
+  param.language : not empty language ? language :
+  pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="text" var="msg" />
+<fmt:requestEncoding value="UTF-8" />
+<!DOCTYPE html>
+<html lang="${language}">
 
 <c:choose>
     <c:when test="${sessionScope.isAuth!='true'}">
@@ -11,10 +21,9 @@
 <html>
     <head>
         <jsp:include page="./inc/head.jsp"/>
-        <title>test</title>
+        <title>Company list</title>
     </head>
 <body>
-	ADMIN SHOW Companies
 <jsp:include page="./inc/header.jsp"/>
 <jsp:include page="./inc/admin_menu.jsp"/><br>
     <div>

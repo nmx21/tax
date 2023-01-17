@@ -30,10 +30,9 @@
 <html>
     <head>
         <jsp:include page="./inc/head.jsp"/>
-        <title>test</title>
+        <title>Company</title>
     </head>
     <body>
-        COMPANY PROFILE FOR ADMIN
         <jsp:include page="./inc/header.jsp"/>
         <jsp:include page="./inc/admin_menu.jsp"/>
         <br>
@@ -51,7 +50,7 @@
                             <td><h6>${sessionScope.company_info.inn}</h6></td>
                         </tr>
                         <tr>
-                            <td>Адреса</td>
+                            <td><fmt:message key="address" bundle="${msg}"/></td>
                             <td></td>
                         </tr>
                         <tr>

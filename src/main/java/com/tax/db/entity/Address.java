@@ -91,16 +91,14 @@ public class Address implements Serializable {
 
     @Override
     public String toString() {
-        return "Address{" +
-                "id=" + id +
-                ", country='" + country + '\'' +
-                ", region='" + region + '\'' +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'' +
-                ", building='" + building + '\'' +
-                ", buildingLetter='" + buildingLetter + '\'' +
-                ", office='" + office + '\'' +
-                ", officeLetter='" + officeLetter + '\'' +
-                '}';
+        return  country + "," +
+                region + "," +
+                city + "," +
+                street + "," +
+                building + "," +
+                buildingLetter + "," +
+                office + "," +
+                officeLetter
+                ;
     }
 }
