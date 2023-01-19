@@ -55,22 +55,31 @@ public class UploadServlet extends HttpServlet {
             User currentUser = (User) req.getSession().getAttribute("currentUser");
             File file = new File(pathToFile);
             String typeFile = getFileExtension(file);
-            if ("xml".equals(typeFile)) {
-                XMLRead xmlRead = new XMLRead();
-                ReportManager.getInstance().saveReport(currentUser, xmlRead.parseFile(pathToFile));
-                file.delete();
-            } else if ("json".equals(typeFile)) {
-                JSONRead jsonRead = new JSONRead();
-                ReportManager.getInstance().saveReport(currentUser, jsonRead.parseFile(pathToFile));
-                file.delete();
-            } else {
-                file.delete();
-                log.error("Error in doPost - file type is not valid ");
-                throw new ParseFileException("Error parse file");
+            switch (typeFile) {
+                case "xml":
+                    XMLRead xmlRead = new XMLRead();
+                    ReportManager.getInstance().saveReport(currentUser, xmlRead.parseFile(pathToFile));
+                    file.delete();
+                    break;
+                case "json":
+                    JSONRead jsonRead = new JSONRead();
+                    ReportManager.getInstance().saveReport(currentUser, jsonRead.parseFile(pathToFile));
+                    file.delete();
+                    break;
+                default:
+                    file.delete();
+                    log.error("Error in doPost - file type is not valid ");
+                    throw new ParseFileException("Error parse file");
             }
-        } catch (IOException | ParseException | DBException e) {
-            log.error("Error in doPost  ", e);
-            throw new ParseFileException("Error parce file", e);
+        } catch (IOException e) {
+            log.error("Error (IOException) in doPost ", e);
+            throw new ParseFileException("Error (IOException) parce file", e);
+        } catch (ParseException e) {
+            log.error("Error (ParseException) in doPost  ", e);
+            throw new ParseFileException("Error (ParseException) parce file", e);
+        } catch (DBException e) {
+            log.error("Error (DBException) in doPost  ", e);
+            throw new ParseFileException("Error (DBException) parce file", e);
         }
         resp.sendRedirect("user_report_list_show.jsp");
 

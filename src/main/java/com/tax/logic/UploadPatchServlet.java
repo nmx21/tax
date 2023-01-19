@@ -53,18 +53,21 @@ public class UploadPatchServlet extends HttpServlet {
             req.getSession().setAttribute("message", "Файл завантажено");
             File file = new File(pathToFile);
             String typeFile = getFileExtension(file);
-            if ("xml".equals(typeFile)) {
-                XMLRead xmlRead = new XMLRead();
-                ReportManager.getInstance().updateReport(currentUser, xmlRead.parseFile(pathToFile));
-                file.delete();
-            } else if ("json".equals(typeFile)) {
-                JSONRead jsonRead = new JSONRead();
-                ReportManager.getInstance().updateReport(currentUser, jsonRead.parseFile(pathToFile));
-                file.delete();
-            } else {
-                file.delete();
-                log.error("Error in doPost - file type is not valid ");
-                throw new ParseFileException("Error in file type");
+            switch (typeFile) {
+                case "xml":
+                    XMLRead xmlRead = new XMLRead();
+                    ReportManager.getInstance().updateReport(currentUser, xmlRead.parseFile(pathToFile));
+                    file.delete();
+                    break;
+                case "json":
+                    JSONRead jsonRead = new JSONRead();
+                    ReportManager.getInstance().updateReport(currentUser, jsonRead.parseFile(pathToFile));
+                    file.delete();
+                    break;
+                default:
+                    file.delete();
+                    log.error("Error in doPost - file type is not valid ");
+                    throw new ParseFileException("Error in file type");
             }
         } catch (IOException | ParseException | DBException e) {
             log.error("Error in doPost:  ", e);
