@@ -33,12 +33,12 @@ public class User implements Serializable {
     }
 
     public void setId(int id) {
-            try {
-                if (id >= 0 && id < Integer.MAX_VALUE)
-                    this.id = id;
-            } catch(NumberFormatException e){
-                throw new NumberFormatException("NumberFormatException" + e);
-            }
+        try {
+            if (id >= 0 && id < Integer.MAX_VALUE)
+                this.id = id;
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("NumberFormatException" + e);
+        }
     }
 
     public String getUsername() {
@@ -50,7 +50,7 @@ public class User implements Serializable {
             throw new IllegalArgumentException("Illegal username value, current value is blank");
         } else if (username.length() > 16) {
             throw new IllegalArgumentException("Illegal username value, current value is long (" + username + ")");
-        } else if (username.length()<4) {
+        } else if (username.length() < 4) {
             throw new IllegalArgumentException("Illegal username value, current value is short (" + username + ")");
         } else {
             this.username = username;
@@ -66,7 +66,7 @@ public class User implements Serializable {
             throw new IllegalArgumentException("Illegal password value, current value is blank");
         } else if (password.length() > 32) {
             throw new IllegalArgumentException("Illegal password value, current value is long (" + password + ")");
-        } else if (password.length()<4) {
+        } else if (password.length() < 4) {
             throw new IllegalArgumentException("Illegal password value, current value is short (" + password + ")");
         } else {
             this.password = password;
@@ -78,12 +78,12 @@ public class User implements Serializable {
     }
 
     public void setEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
                 "[a-zA-Z0-9_+&*-]+)*@" +
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
                 "A-Z]{2,7}$";
         Pattern pat = Pattern.compile(emailRegex);
-        if (email != null && pat.matcher(email).matches()){
+        if (email != null && pat.matcher(email).matches()) {
             this.email = email;
         } else throw new IllegalArgumentException("Illegal email value");
     }
@@ -93,9 +93,9 @@ public class User implements Serializable {
     }
 
     public void setRoleId(Integer roleId) {
-        if (roleId>=0) {
+        if (roleId >= 0) {
             this.roleId = roleId;
-        }else throw new IllegalArgumentException("Illegal roleId value. RoleId cant be < 0");
+        } else throw new IllegalArgumentException("Illegal roleId value. RoleId cant be < 0");
     }
 
     public String getDateRegistry() {
