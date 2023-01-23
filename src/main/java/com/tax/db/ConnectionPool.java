@@ -72,7 +72,7 @@ public class ConnectionPool {
         user.setUsername(rs.getString("username"));
         user.setPassword(rs.getString("password"));
         user.setEmail(rs.getString("email"));
-        user.setRoleId(rs.getString("role_id"));
+        user.setRoleId(rs.getInt("role_id"));
         user.setDateRegistry(rs.getString("create_time"));
         return user;
     }
