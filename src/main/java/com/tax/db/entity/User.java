@@ -1,6 +1,7 @@
 package com.tax.db.entity;
 
 import java.io.Serializable;
+import java.util.regex.Pattern;
 
 public class User implements Serializable {
     private int id;
@@ -13,12 +14,12 @@ public class User implements Serializable {
 
     private String dateRegistry;
 
-    private String roleId;
+    private Integer roleId;
 
     public User(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
+        setUsername(username);
+        setPassword(password);
+        setEmail(email);
     }
 
     public User() {
@@ -32,7 +33,12 @@ public class User implements Serializable {
     }
 
     public void setId(int id) {
-        this.id = id;
+            try {
+                if (id >= 0 && id < Integer.MAX_VALUE)
+                    this.id = id;
+            } catch(NumberFormatException e){
+                throw new NumberFormatException("NumberFormatException" + e);
+            }
     }
 
     public String getUsername() {
@@ -40,7 +46,15 @@ public class User implements Serializable {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("Illegal username value, current value is blank");
+        } else if (username.length() > 16) {
+            throw new IllegalArgumentException("Illegal username value, current value is long (" + username + ")");
+        } else if (username.length()<4) {
+            throw new IllegalArgumentException("Illegal username value, current value is short (" + username + ")");
+        } else {
+            this.username = username;
+        }
     }
 
     public String getPassword() {
@@ -48,7 +62,15 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        if (password.isBlank()) {
+            throw new IllegalArgumentException("Illegal password value, current value is blank");
+        } else if (password.length() > 32) {
+            throw new IllegalArgumentException("Illegal password value, current value is long (" + password + ")");
+        } else if (password.length()<4) {
+            throw new IllegalArgumentException("Illegal password value, current value is short (" + password + ")");
+        } else {
+            this.password = password;
+        }
     }
 
     public String getEmail() {
@@ -56,15 +78,24 @@ public class User implements Serializable {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email != null && pat.matcher(email).matches()){
+            this.email = email;
+        } else throw new IllegalArgumentException("Illegal email value");
     }
 
-    public String getRoleId() {
+    public Integer getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
+    public void setRoleId(Integer roleId) {
+        if (roleId>=0) {
+            this.roleId = roleId;
+        }else throw new IllegalArgumentException("Illegal roleId value. RoleId cant be < 0");
     }
 
     public String getDateRegistry() {
