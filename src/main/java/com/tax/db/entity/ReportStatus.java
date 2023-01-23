@@ -14,7 +14,9 @@ public class ReportStatus implements Serializable {
     }
 
     public void setId(int id) {
-        this.id = id;
+        if (id >= 0) {
+            this.id = id;
+        } else throw new IllegalArgumentException("ReportStatus Id cant be < 0");
     }
 
     public String getType() {
@@ -22,7 +24,9 @@ public class ReportStatus implements Serializable {
     }
 
     public void setType(String type) {
-        this.type = type;
+        if (!type.isBlank()) {
+            this.type = type;
+        } else throw new IllegalArgumentException("Type of ReportStatus cant be blank");
     }
 
     @Override
