@@ -41,7 +41,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label"><fmt:message key="password"  bundle="${msg}"/></label>
-                                <input type="password" class="form-control" name="password" id="password" minlength="4" maxlength="10" required>
+                                <input type="password" class="form-control" name="password" id="password" minlength="4" maxlength="32" required>
                             </div>
                             <input value=<fmt:message key="enter"  bundle="${msg}"/> type="submit">
                         </form>
