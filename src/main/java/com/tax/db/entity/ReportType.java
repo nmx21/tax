@@ -3,9 +3,9 @@ package com.tax.db.entity;
 import java.io.Serializable;
 
 public class ReportType implements Serializable {
-    int id;
-    String type;
-    CompanyType companyTypeId;
+    private int id;
+    private String type;
+    private CompanyType companyTypeId;
 
     public ReportType() {
     }
@@ -15,9 +15,10 @@ public class ReportType implements Serializable {
     }
 
     public void setId(int id) {
-        if (id >= 0) {
-            this.id = id;
-        } else throw new IllegalArgumentException("ReportType Id cant be < 0");
+        if (id < 0) {
+            throw new IllegalArgumentException("ReportType Id cant be < 0 and >" + Integer.MAX_VALUE);
+        }
+        this.id = id;
     }
 
     public String getType() {
@@ -25,9 +26,13 @@ public class ReportType implements Serializable {
     }
 
     public void setType(String type) {
-        if (!type.isBlank()) {
+        if (type.isBlank()) {
+            throw new IllegalArgumentException("Type of ReportType cant be blank");
+        } else if (type.length() > 45) {
+            throw new IllegalArgumentException("Illegal type value, current value is long (" + type + ")");
+        } else {
             this.type = type;
-        } else throw new IllegalArgumentException("Type of ReportType cant be blank");
+        }
     }
 
     public CompanyType getCompanyTypeId() {

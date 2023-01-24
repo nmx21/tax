@@ -19,7 +19,7 @@ class ReportTypeTest {
         ReportType reportType = new ReportType();
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> reportType.setId(-5));
-        assertEquals("ReportType Id cant be < 0", exception.getMessage());
+        assertEquals("ReportType Id cant be < 0 and >2147483647", exception.getMessage());
     }
 
     @Test
@@ -35,5 +35,13 @@ class ReportTypeTest {
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> reportType.setType(""));
         assertEquals("Type of ReportType cant be blank", exception.getMessage());
+    }
+
+    @Test
+    void setLongType() {
+        ReportType reportType = new ReportType();
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> reportType.setType("qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnm"));
+        assertEquals("Illegal type value, current value is long (qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnm)", exception.getMessage());
     }
 }
