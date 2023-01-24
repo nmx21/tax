@@ -23,6 +23,14 @@ class UserTest {
     }
 
     @Test
+    void setNotValidId() {
+        User user = new User();
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> user.setId(-5));
+        assertEquals("User Id cant be < 0 and >2147483647", exception.getMessage());
+    }
+
+    @Test
     void setUsernameIsEmpty() {
         User user = new User();
         Exception exception = assertThrows(IllegalArgumentException.class,

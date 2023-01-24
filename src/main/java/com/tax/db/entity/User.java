@@ -33,12 +33,10 @@ public class User implements Serializable {
     }
 
     public void setId(int id) {
-        try {
-            if (id >= 0 && id < Integer.MAX_VALUE)
-                this.id = id;
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException("NumberFormatException" + e);
+        if (id < 0) {
+            throw new IllegalArgumentException("User Id cant be < 0 and >"+ Integer.MAX_VALUE);
         }
+        this.id = id;
     }
 
     public String getUsername() {
