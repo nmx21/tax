@@ -22,6 +22,9 @@ public class Address implements Serializable {
     }
 
     public void setId(int id) {
+        if (id < 0) {
+            throw new IllegalArgumentException("Id cant be < 0 and >" + Integer.MAX_VALUE);
+        }
         this.id = id;
     }
 
@@ -30,7 +33,13 @@ public class Address implements Serializable {
     }
 
     public void setCountry(String country) {
-        this.country = country;
+        if (country.isBlank()) {
+            throw new IllegalArgumentException("Illegal country name value, current value is blank");
+        } else if (country.length() > 100) {
+            throw new IllegalArgumentException("Illegal country name value, current value is long (" + country + ")");
+        } else {
+            this.country = country;
+        }
     }
 
     public String getRegion() {
@@ -38,7 +47,13 @@ public class Address implements Serializable {
     }
 
     public void setRegion(String region) {
-        this.region = region;
+        if (region.isBlank()) {
+            throw new IllegalArgumentException("Illegal region name value, current value is blank");
+        } else if (region.length() > 100) {
+            throw new IllegalArgumentException("Illegal region name value, current value is long (" + region + ")");
+        } else {
+            this.region = region;
+        }
     }
 
     public String getCity() {
@@ -46,7 +61,13 @@ public class Address implements Serializable {
     }
 
     public void setCity(String city) {
-        this.city = city;
+        if (city.isBlank()) {
+            throw new IllegalArgumentException("Illegal city name value, current value is blank");
+        } else if (city.length() > 100) {
+            throw new IllegalArgumentException("Illegal city name value, current value is long (" + city + ")");
+        } else {
+            this.city = city;
+        }
     }
 
     public String getStreet() {
@@ -54,7 +75,13 @@ public class Address implements Serializable {
     }
 
     public void setStreet(String street) {
-        this.street = street;
+        if (street.isBlank()) {
+            throw new IllegalArgumentException("Illegal street name value, current value is blank");
+        } else if (street.length() > 100) {
+            throw new IllegalArgumentException("Illegal street name value, current value is long (" + street + ")");
+        } else {
+            this.street = street;
+        }
     }
 
     public String getBuilding() {
@@ -62,7 +89,14 @@ public class Address implements Serializable {
     }
 
     public void setBuilding(String building) {
-        this.building = building;
+        if (building.isBlank()) {
+            throw new IllegalArgumentException("Illegal building name value, current value is blank");
+        } else if (building.length() > 5) {
+            throw new IllegalArgumentException("Illegal building value, current value is long (" + building + ")");
+        } else if (!building.matches("^\\d+$")) {
+            throw new IllegalArgumentException("Illegal building value, must be only digit");
+        } else
+            this.building = building;
     }
 
     public String getBuildingLetter() {
@@ -70,7 +104,11 @@ public class Address implements Serializable {
     }
 
     public void setBuildingLetter(String buildingLetter) {
-        this.buildingLetter = buildingLetter;
+        if (buildingLetter.length() > 2) {
+            throw new IllegalArgumentException("Illegal building letter value, current value is long (" + buildingLetter + ")");
+        } else {
+            this.buildingLetter = buildingLetter;
+        }
     }
 
     public String getOffice() {
@@ -78,7 +116,14 @@ public class Address implements Serializable {
     }
 
     public void setOffice(String office) {
-        this.office = office;
+        if (office.isBlank()) {
+            throw new IllegalArgumentException("Office cant be blank");
+        } else if (office.length() > 5) {
+            throw new IllegalArgumentException("Illegal office value, current value is long (" + office + ")");
+        } else if (!office.matches("^\\d+$")) {
+            throw new IllegalArgumentException("Illegal office value, must be only digit");
+        } else
+            this.office = office;
     }
 
     public String getOfficeLetter() {
@@ -86,12 +131,16 @@ public class Address implements Serializable {
     }
 
     public void setOfficeLetter(String officeLetter) {
-        this.officeLetter = officeLetter;
+        if (officeLetter.length() > 2) {
+            throw new IllegalArgumentException("Illegal office letter value, current value is long (" + officeLetter + ")");
+        } else {
+            this.officeLetter = officeLetter;
+        }
     }
 
     @Override
     public String toString() {
-        return  country + "," +
+        return country + "," +
                 region + "," +
                 city + "," +
                 street + "," +
