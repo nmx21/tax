@@ -4,18 +4,18 @@ import java.io.Serializable;
 import java.sql.Date;
 
 public class Report implements Serializable {
-    int id;
-    ReportType reportType;
-    int financialIncome;
-    int taxAmount;
-    String description;
-    String comment;
-    Date dateCreate;
-    Date dateLastEdit;
-    ReportStatus reportStatus;
-    Company company;
-    User user;
-    String reportBody;
+    private int id;
+    private ReportType reportType;
+    private int financialIncome;
+    private int taxAmount;
+    private String description;
+    private String comment;
+    private Date dateCreate;
+    private Date dateLastEdit;
+    private ReportStatus reportStatus;
+    private Company company;
+    private User user;
+    private String reportBody;
 
     public Report() {
     }
@@ -25,6 +25,9 @@ public class Report implements Serializable {
     }
 
     public void setId(int id) {
+        if (id < 0) {
+            throw new IllegalArgumentException("Report Id cant be < 0 and >"+ Integer.MAX_VALUE);
+        }
         this.id = id;
     }
 
@@ -41,6 +44,9 @@ public class Report implements Serializable {
     }
 
     public void setFinancialIncome(int financialIncome) {
+        if (financialIncome < 0) {
+            throw new IllegalArgumentException("Financial Income cant be < 0 and >"+ Integer.MAX_VALUE);
+        }
         this.financialIncome = financialIncome;
     }
 
@@ -49,6 +55,9 @@ public class Report implements Serializable {
     }
 
     public void setTaxAmount(int taxAmount) {
+        if (taxAmount < 0) {
+            throw new IllegalArgumentException("Tax Amount cant be < 0 and >"+ Integer.MAX_VALUE);
+        }
         this.taxAmount = taxAmount;
     }
 
@@ -57,7 +66,11 @@ public class Report implements Serializable {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        if (description.length() > 254) {
+            throw new IllegalArgumentException("Illegal description value, current value is long (" + description + ")");
+        } else {
+            this.description = description;
+        }
     }
 
     public String getComment() {
@@ -65,7 +78,11 @@ public class Report implements Serializable {
     }
 
     public void setComment(String comment) {
-        this.comment = comment;
+        if (comment.length() > 10000) {
+            throw new IllegalArgumentException("Illegal comment value, current value is long (more than 10001 symbol)");
+        } else {
+            this.comment = comment;
+        }
     }
 
     public Date getDateCreate() {

@@ -3,15 +3,15 @@ package com.tax.db.entity;
 import java.io.Serializable;
 
 public class CompanyType implements Serializable {
-    int id;
-    String type;
+    private int id;
+    private String type;
 
     public CompanyType() {
     }
 
     public CompanyType(int id, String type) {
-        this.id = id;
-        this.type = type;
+        setId(id);
+        setType(type);
     }
 
     public int getId() {
@@ -19,6 +19,9 @@ public class CompanyType implements Serializable {
     }
 
     public void setId(int id) {
+        if (id < 0) {
+            throw new IllegalArgumentException("Company type Id cant be < 0 and >" + Integer.MAX_VALUE);
+        }
         this.id = id;
     }
 
@@ -27,7 +30,13 @@ public class CompanyType implements Serializable {
     }
 
     public void setType(String type) {
-        this.type = type;
+        if (type.isBlank()) {
+            throw new IllegalArgumentException("Illegal company type value, current value is blank");
+        } else if (type.length() > 45) {
+            throw new IllegalArgumentException("Illegal company type value, current value is long (" + type + ")");
+        } else {
+            this.type = type;
+        }
     }
 
     @Override
