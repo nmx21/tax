@@ -20,7 +20,6 @@ class CompanyTest {
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> company.setId(-5));
         assertEquals("Id cant be < 0 and >2147483647", exception.getMessage());
-
     }
 
     @Test
