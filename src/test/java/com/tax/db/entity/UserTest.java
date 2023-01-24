@@ -31,6 +31,13 @@ class UserTest {
     }
 
     @Test
+    void setUsername() {
+        User user = new User();
+        user.setUsername("someName");
+        assertEquals("someName", user.getUsername());
+    }
+
+    @Test
     void setUsernameIsEmpty() {
         User user = new User();
         Exception exception = assertThrows(IllegalArgumentException.class,
