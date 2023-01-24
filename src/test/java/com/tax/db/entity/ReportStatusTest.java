@@ -19,7 +19,7 @@ class ReportStatusTest {
         ReportStatus reportStatus = new ReportStatus();
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> reportStatus.setId(-5));
-        assertEquals("ReportStatus Id cant be < 0", exception.getMessage());
+        assertEquals("ReportStatus Id cant be < 0 and >2147483647", exception.getMessage());
     }
 
     @Test
