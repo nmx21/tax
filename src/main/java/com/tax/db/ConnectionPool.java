@@ -258,7 +258,7 @@ public class ConnectionPool {
         }
 
         if (k > 0) {
-            ResultSet rs = null;
+            ResultSet rs;
             try (PreparedStatement preparedStatement = con.prepareStatement(FIND_ADDRESS + " where " + String.join(" and ", findKey) + " limit 1")) {
                 for (int i = 1; i <= k; i++) {
                     preparedStatement.setString(i, findValue.get(i - 1));
@@ -310,7 +310,7 @@ public class ConnectionPool {
         }
     }
 
-    private void updateDataAddressTable(Connection con, CompanyDataAddress companyDataAddress) throws SQLException {
+    private void updateDataAddressTable(Connection con, CompanyDataAddress companyDataAddress) {
         try (PreparedStatement preparedStatement = con.prepareStatement(UPDATE_DATA_COMPANY_ADDRESS_TABLE)) {
             int k = 1;
             preparedStatement.setInt(k++, companyDataAddress.getCompanyDataId());
@@ -557,7 +557,7 @@ public class ConnectionPool {
 
     public List<Report> findReportsByCompanyId(Connection con, int id) throws SQLException, DBException {
         List<Report> reports = new ArrayList<>();
-        try (PreparedStatement preparedStatement = con.prepareStatement(FIND_ALL_REPORTS_BY_COMPANY_ID);) {
+        try (PreparedStatement preparedStatement = con.prepareStatement(FIND_ALL_REPORTS_BY_COMPANY_ID)) {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {

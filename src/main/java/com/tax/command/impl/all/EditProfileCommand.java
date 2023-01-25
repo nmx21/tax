@@ -1,8 +1,8 @@
 package com.tax.command.impl.all;
 
 import com.tax.command.Command;
-import com.tax.exception.DBException;
 import com.tax.db.entity.User;
+import com.tax.exception.DBException;
 import com.tax.logic.UserManager;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,11 +16,16 @@ public class EditProfileCommand implements Command {
         User currentUser;
         currentUser = (User) req.getSession().getAttribute("currentUser");
         user.setId(currentUser.getId());
-        user.setEmail(req.getParameter("email"));
-        user.setPassword(req.getParameter("password"));
-
+        user.setUsername(currentUser.getUsername());
+        if (!"".equals(req.getParameter("email"))) {
+            user.setEmail(req.getParameter("email"));
+        }
+        if (!"".equals(req.getParameter("password"))) {
+            user.setPassword(req.getParameter("password"));
+        }
         if (!currentUser.getEmail().equals(user.getEmail()) && (!currentUser.getPassword().equals(user.getPassword()) || !"".equals(user.getPassword()))) {
             UserManager.getInstance().updateUser(user);
+            req.getSession().setAttribute("currentUser", user);
         }
         if ("admin".equals(req.getSession().getAttribute("status")))
             return "controller?command=adminProfile";

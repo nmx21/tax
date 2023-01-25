@@ -36,7 +36,6 @@ public class AddCompanyCommand implements Command {
         company.setName(req.getParameter("name"));
         company.setInn(req.getParameter("inn"));
         company.setAddress(address);
-
         User curentUser = (User) req.getSession().getAttribute("currentUser");
         CompanyManager.getInstance().createCompanies(curentUser, company);
 

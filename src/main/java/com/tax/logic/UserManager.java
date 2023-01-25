@@ -79,13 +79,20 @@ public class UserManager {
             con.setTransactionIsolation(
                     Connection.TRANSACTION_READ_COMMITTED);
             con.setAutoCommit(false);
-            if (!user.getEmail().equals("")) {
-                changeEmail = connectionPool.updateUserEmail(con, user.getEmail(), user.getId());
+
+            if (user.getEmail() != null) {
+                if (user.getEmail().equals("")) {
+                } else {
+                    changeEmail = connectionPool.updateUserEmail(con, user.getEmail(), user.getId());
+                }
             }
-            if (!user.getPassword().equals(""))
-                changePassword = connectionPool.updateUserPassword(con, user.getPassword(), user.getId());
+            if (user.getPassword() != null) {
+                if (!user.getPassword().equals("")) {
+                    changePassword = connectionPool.updateUserPassword(con, user.getPassword(), user.getId());
+                }
+            }
             con.commit();
-            if (!changeEmail && !changePassword) log.warn("Email or Password not changed");
+            if (!changeEmail || !changePassword) log.warn("Email or Password not changed");
         } catch (SQLException ex) {
             log.error("Error in updateUser  ", ex);
             if (con != null) {
@@ -93,7 +100,6 @@ public class UserManager {
                     con.rollback();
                 } catch (SQLException e) {
                     log.error("Error in updateUser rollback  ", ex);
-                    e.printStackTrace();
                 }
             }
             throw new DBException("Cannot update users", ex);
