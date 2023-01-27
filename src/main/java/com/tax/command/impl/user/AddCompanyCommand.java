@@ -1,10 +1,10 @@
 package com.tax.command.impl.user;
 
 import com.tax.command.Command;
-import com.tax.exception.DBException;
 import com.tax.db.entity.Address;
 import com.tax.db.entity.Company;
 import com.tax.db.entity.User;
+import com.tax.exception.DBException;
 import com.tax.logic.CompanyManager;
 import com.tax.logic.CompanyTypeManager;
 

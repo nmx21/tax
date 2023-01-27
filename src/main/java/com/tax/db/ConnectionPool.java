@@ -34,6 +34,7 @@ public class ConnectionPool {
     private static final String FIND_ALL_COMPANY_TYPE = "select * from company_type";
     private static final String INSERT_COMPANY = "insert into company_data (company_type_id, name, inn_edrpou, address_id) values (?,?,?,?)";
     private static final String FIND_COMPANY_BY_NAME = "select company_data.id, company_type.id as type_id, company_type.type, company_data.name, company_data.inn_edrpou, company_data.address_id from company_data, company_type where company_data.company_type_id = company_type.id and company_type.id = ? and name = ?";
+    private static final String FIND_ALL_COMPANY_BY_USER_ID = "select company_data.id, company_type.id as type_id, company_type.type, company_data.name, company_data.inn_edrpou, company_data.address_id from company_data, company_type where company_data.company_type_id = company_type.id and company_data.id in (select company_data_id from user_has_company_data where user_id = ?)";
     private static final String FIND_COMPANY_BY_ID = "select company_data.id, company_type.id as type_id, company_type.type, company_data.name, company_data.inn_edrpou, company_data.address_id from company_data, company_type where company_data.company_type_id = company_type.id and company_data.id = ?";
     private static final String FIND_ALL_COMPANIES = "select `company_data`.`id`, `company_data`.`company_type_id` as `type_id`, `company_type`.`type`,`company_data`.`name`, `company_data`.`inn_edrpou`, company_data.address_id FROM `company_data`,`company_type` where `company_data`.`company_type_id` = `company_type`.`id`";
     private static final String UPDATE_USER_COMPANY_TABLE = "insert into user_has_company_data (user_id, company_data_id) values (?,?) ";
@@ -203,6 +204,7 @@ public class ConnectionPool {
     }
 
     public Address findAddress(Connection con, Address address) throws SQLException {
+        Address returnAddress = null;
         int k = 0;
         ArrayList<String> findKey = new ArrayList<>();
         ArrayList<String> findValue = new ArrayList<>();
@@ -262,16 +264,14 @@ public class ConnectionPool {
             try (PreparedStatement preparedStatement = con.prepareStatement(FIND_ADDRESS + " where " + String.join(" and ", findKey) + " limit 1")) {
                 for (int i = 1; i <= k; i++) {
                     preparedStatement.setString(i, findValue.get(i - 1));
-                    rs = preparedStatement.executeQuery();
-                    if (rs.next()) {
-                        address = extractAddress(rs);
-                    }
+                }
+                rs = preparedStatement.executeQuery();
+                if (rs.next()) {
+                    returnAddress = extractAddress(rs);
                 }
             }
-            return address;
         }
-        return null;
-
+        return returnAddress;
     }
 
     private boolean emptyOrNot(String value) {
@@ -597,5 +597,17 @@ public class ConnectionPool {
                 }
             }
         }
+    }
+
+    public List<Company> findCompanyByUserId(Connection con, int id) throws DBException, SQLException {
+        List<Company> companies = new ArrayList<>();
+        try (PreparedStatement preparedStatement = con.prepareStatement(FIND_ALL_COMPANY_BY_USER_ID)) {
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                companies.add(extractCompany(rs));
+            }
+        }
+        return companies;
     }
 }

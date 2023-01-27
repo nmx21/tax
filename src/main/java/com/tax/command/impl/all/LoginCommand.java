@@ -20,8 +20,7 @@ public class LoginCommand implements Command {
         if (user.getPassword().equals(password)) {
             req.getSession().setAttribute("currentUser", user);
             req.getSession().setAttribute("isAuth", "true");
-
-            if ("1".equals(user.getRoleId())) {
+            if (user.getRoleId().equals(1)) {
                 req.getSession().setAttribute("status", "admin");
                 return "admin_page.jsp";
             } else {

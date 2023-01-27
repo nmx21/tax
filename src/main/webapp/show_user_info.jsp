@@ -32,66 +32,40 @@
         <title>User info</title>
     </head>
     <body>
-        SHOW USER INFO
         <jsp:include page="./inc/header.jsp"/>
         <div class="container">
         <jsp:include page="./inc/admin_menu.jsp"/>
         <br>
-            <div class="row">
-                <div class="col-9">
-                    <table class="table table-hover">
-                        <tr>
-                            <td>Назва</td>
-                            <td><h6>${sessionScope.user_info.username} </h6></td>
-                        </tr>
-                        <tr>
-                            <td>Імейл</td>
-                            <td><h6>${sessionScope.user_info.email}</h6></td>
-                        </tr>
-                        <tr>
-                            <td>Дата реєстрації</td>
-                            <td><h6>${sessionScope.user_info.dateRegistry}</h6></td>
-                        </tr>
-                        <tr>
-                            <td>Статус користувача</td>
-                            <td><h6>${sessionScope.user_info.roleId}</h6></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="col-9">
-                    <br>
-                    <h5>Компанії</h5>
-                    <br>
-                    <div id="example_wrapper" class="dataTables_wrapper">
-                        <table id="table" class="display dataTable" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" scope="col">#</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1"><fmt:message key="type" bundle="${msg}"/></th>
-                                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1"><fmt:message key="name" bundle="${msg}"/></th>
-                                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1"><fmt:message key="inn" bundle="${msg}"/></th>
-                                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1"><fmt:message key="do" bundle="${msg}"/></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach var="row" items="${result_select_user_company.rows}">
-                                    <tr>
-                                        <th scope="row">${row.id}</th>
-                                        <td>${row.type}</td>
-                                        <td>${row.name}</td>
-                                        <td>${row.inn_edrpou}</td>
-                                        <td><a href="controller?command=showCompanyInfo&id=${row.id}"><fmt:message key="companycard" bundle="${msg}"/></a></td>
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                        </thead>
-                    </table>
-                </div>
+        <div class="row">
+            <div class="col-9">
+                <table class="table table-hover">
+                    <tr>
+                        <td>Назва</td>
+                        <td><h6>${sessionScope.user_info.username} </h6></td>
+                    </tr>
+                    <tr>
+                        <td>Імейл</td>
+                        <td><h6>${sessionScope.user_info.email}</h6></td>
+                    </tr>
+                    <tr>
+                        <td>Дата реєстрації</td>
+                        <td><h6>${sessionScope.user_info.dateRegistry}</h6></td>
+                    </tr>
+                    <tr>
+                        <td>Статус користувача</td>
+                        <td><h6>${sessionScope.user_info.roleId}</h6></td>
+                    </tr>
+                </table>
             </div>
-            <br>
-            <h5>Звіти</h5>
-            <br>
-            <jsp:include page="./inc/admin_reports_table.jsp"/>
+            <div class="col-9">
+                <br>
+                <h5>Компанії</h5>
+                <jsp:include page="./inc/admin_company_list_table.jsp"/>
+            </div>
+            <div class="col-9">
+                <h5>Звіти</h5>
+                <jsp:include page="./inc/admin_reports_table.jsp"/>
+            </div>
         </div>
     <jsp:include page="./inc/footer.jsp"/>
     </body>

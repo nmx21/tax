@@ -1,10 +1,10 @@
 package com.tax.logic;
 
 import com.tax.db.ConnectionPool;
-import com.tax.exception.DBException;
 import com.tax.db.entity.Company;
 import com.tax.db.entity.CompanyType;
 import com.tax.db.entity.User;
+import com.tax.exception.DBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,9 +13,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class CompanyManager {
+    private static final Logger log = LoggerFactory.getLogger(CompanyManager.class.getName());
     private static CompanyManager instance;
     private final ConnectionPool connectionPool;
-    private static final Logger log = LoggerFactory.getLogger(CompanyManager.class.getName());
+
     private CompanyManager() {
         connectionPool = ConnectionPool.getInstance();
     }
@@ -74,6 +75,15 @@ public class CompanyManager {
         } catch (SQLException ex) {
             log.error("Error in findCompanyTypeById ", ex);
             throw new DBException("Cannot find company type", ex);
+        }
+    }
+
+    public Object findCompanyByUserId(int id) throws DBException {
+        try (Connection con = connectionPool.getConnection()) {
+            return connectionPool.findCompanyByUserId(con, id);
+        } catch (SQLException ex) {
+            log.error("Error in findCompanyByUserId ", ex);
+            throw new DBException("Cannot find company by user id", ex);
         }
     }
 }

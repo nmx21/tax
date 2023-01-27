@@ -36,4 +36,3 @@
         </tbody>
     </table>
 </div>
-<a href ="controller?command=listCompany"><fmt:message key="refresh" bundle="${msg}"/></a><br />
