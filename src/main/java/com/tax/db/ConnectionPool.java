@@ -48,6 +48,7 @@ public class ConnectionPool {
     private static final String FIND_REPORT_BY_ID = "select * from report where id = ?";
     private static final String FIND_ALL_REPORTS_BY_COMPANY_ID = "select * from report where company_data_id = ?";
     private static final String UPDATE_REPORT_STATUS = "update report set status_id = ?, comment = ? where id = ?";
+    private static final String UPDATE_LOGIN_DATE = "insert into user_details (user_id) values (?);";
     private static ConnectionPool instance;
     private final DataSource ds;
 
@@ -616,5 +617,14 @@ public class ConnectionPool {
             }
         }
         return companies;
+    }
+
+    public void addLoginTime(Connection con, User user) throws DBException, SQLException {
+        try (PreparedStatement preparedStatement = con.prepareStatement(UPDATE_LOGIN_DATE)) {
+            preparedStatement.setString(1, String.valueOf(user.getId()));
+            if (preparedStatement.executeUpdate() > 0) {
+                //ResultSet rs = preparedStatement.getGeneratedKeys();
+            }
+        }
     }
 }

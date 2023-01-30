@@ -1,8 +1,8 @@
 package com.tax.command.impl.all;
 
 import com.tax.command.Command;
-import com.tax.exception.DBException;
 import com.tax.db.entity.User;
+import com.tax.exception.DBException;
 import com.tax.logic.UserManager;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +20,7 @@ public class LoginCommand implements Command {
         if (user.getPassword().equals(password)) {
             req.getSession().setAttribute("currentUser", user);
             req.getSession().setAttribute("isAuth", "true");
+            UserManager.getInstance().addLoginTime(user);
             if (user.getRoleId().equals(1)) {
                 req.getSession().setAttribute("status", "admin");
                 return "admin_page.jsp";

@@ -115,4 +115,26 @@ public class UserManager {
         }
     }
 
+    public void addLoginTime(User user) throws DBException {
+        Connection con = null;
+        try {
+            con = connectionPool.getConnection();
+            con.setTransactionIsolation(
+                    Connection.TRANSACTION_READ_COMMITTED);
+            con.setAutoCommit(false);
+            connectionPool.addLoginTime(con, user);
+            con.commit();
+        } catch (SQLException ex) {
+            log.error("Error in addLoginTime  ", ex);
+            if (con != null) {
+                try {
+                    con.rollback();
+                } catch (SQLException e) {
+                    log.error("Error in addLoginTime rollback  ", ex);
+                    e.printStackTrace();
+                }
+            }
+            throw new DBException("Cannot add login time", ex);
+        }
+    }
 }
