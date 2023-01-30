@@ -1,11 +1,12 @@
 package com.tax.logic;
 
 import com.tax.db.ConnectionPool;
-import com.tax.exception.DBException;
 import com.tax.db.entity.Report;
 import com.tax.db.entity.ReportStatus;
 import com.tax.db.entity.ReportType;
 import com.tax.db.entity.User;
+import com.tax.exception.DBException;
+import com.tax.exception.ParseFileException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,9 +15,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ReportManager {
+    private static final Logger log = LoggerFactory.getLogger(ReportManager.class.getName());
     private static ReportManager instance;
     private final ConnectionPool connectionPool;
-    private static final Logger log = LoggerFactory.getLogger(ReportManager.class.getName());
 
     private ReportManager() {
         connectionPool = ConnectionPool.getInstance();
@@ -54,16 +55,16 @@ public class ReportManager {
             con = connectionPool.getConnection();
             con.setAutoCommit(false);
             List<Report> reportList = connectionPool.findAllReports(con);
-            for (Report reportOne: reportList
-                 ) {
+            for (Report reportOne : reportList
+            ) {
                 if (reportOne.equals(report)) return;
             }
             connectionPool.createReport(con, report, currentUser);
             con.commit();
             con.setAutoCommit(true);
-        } catch (SQLException ex) {
+        } catch (SQLException | ParseFileException ex) {
             log.error("Error in saveReport  ", ex);
-            throw new DBException("Cannot create companies", ex);
+            throw new DBException("Cannot create report", ex);
         }
     }
 
@@ -121,7 +122,7 @@ public class ReportManager {
         return 1;
     }
 
-    public void updateReport(User currentUser, Report parseFile)  throws DBException {
+    public void updateReport(User currentUser, Report parseFile) throws DBException {
         try (Connection con = connectionPool.getConnection()) {
             connectionPool.updateReport(con, parseFile);
         } catch (SQLException ex) {

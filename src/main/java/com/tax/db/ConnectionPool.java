@@ -2,6 +2,7 @@ package com.tax.db;
 
 import com.tax.db.entity.*;
 import com.tax.exception.DBException;
+import com.tax.exception.ParseFileException;
 import com.tax.logic.AddressManager;
 import com.tax.logic.CompanyManager;
 import com.tax.logic.ReportManager;
@@ -100,7 +101,6 @@ public class ConnectionPool {
     }
 
     public Connection getConnection() throws SQLException {
-        // adjust a connection
         return ds.getConnection();
     }
 
@@ -208,53 +208,44 @@ public class ConnectionPool {
         int k = 0;
         ArrayList<String> findKey = new ArrayList<>();
         ArrayList<String> findValue = new ArrayList<>();
-        ArrayList<String> field = new ArrayList<>();
 
         if (emptyOrNot(address.getCountry())) {
             ++k;
-            field.add("?");
             findKey.add("country = ? ");
             findValue.add(address.getCountry());
         }
         if (emptyOrNot(address.getRegion())) {
             ++k;
-            field.add("?");
             findKey.add("state = ? ");
             findValue.add(address.getRegion());
         }
         if (emptyOrNot(address.getCity())) {
             ++k;
-            field.add("?");
             findKey.add("city = ? ");
             findValue.add(address.getCity());
         }
         if (emptyOrNot(address.getStreet())) {
             ++k;
-            field.add("?");
             findKey.add("street = ? ");
             findValue.add(address.getStreet());
         }
         if (emptyOrNot(address.getBuilding())) {
             ++k;
-            field.add("?");
             findKey.add("building = ? ");
             findValue.add(address.getBuilding());
         }
         if (emptyOrNot(address.getBuildingLetter())) {
             ++k;
-            field.add("?");
             findKey.add("building_letter = ? ");
             findValue.add(address.getBuildingLetter());
         }
         if (emptyOrNot(address.getOffice())) {
             ++k;
-            field.add("?");
             findKey.add("office = ? ");
             findValue.add(address.getOffice());
         }
         if (emptyOrNot(address.getOfficeLetter())) {
             ++k;
-            field.add("?");
             findKey.add("office_letter = ? ");
             findValue.add(address.getOfficeLetter());
         }
@@ -450,7 +441,6 @@ public class ConnectionPool {
         ReportType reportType = new ReportType();
         reportType.setId(rs.getInt("report_type_id"));
         reportType = ReportManager.getInstance().findReportTypeById(reportType.getId());
-
         ReportStatus reportStatus = new ReportStatus();
         reportStatus.setId(rs.getInt("status_id"));
         reportStatus = ReportManager.getInstance().findReportStatusById(reportStatus.getId());
@@ -491,22 +481,39 @@ public class ConnectionPool {
         return reportType;
     }
 
-    public void createReport(Connection con, Report report, User currentUser) throws SQLException {
-        try (PreparedStatement preparedStatement = con.prepareStatement(INSERT_REPORT, Statement.RETURN_GENERATED_KEYS)) {
-            int k = 1;
-            preparedStatement.setInt(k++, report.getCompany().getId());
-            preparedStatement.setInt(k++, report.getReportType().getId());
-            preparedStatement.setInt(k++, report.getFinancialIncome());
-            preparedStatement.setInt(k++, report.getTaxAmount());
-            preparedStatement.setString(k++, report.getDescription());
-            preparedStatement.setInt(k++, currentUser.getId());
-            preparedStatement.setString(k++, "report Body");
-            preparedStatement.setInt(k, 0);
-            if (preparedStatement.executeUpdate() > 0) {
-                ResultSet rs = preparedStatement.getGeneratedKeys();
-                if (rs.next()) {
-                    int reportId = rs.getInt(1);
-                    report.setId(reportId);
+    public void createReport(Connection con, Report report, User currentUser) throws SQLException, ParseFileException, DBException {
+        Company company = null;
+
+
+        try {
+            company = findCompanyById(con, report.getCompany().getId());
+        } catch (DBException e) {
+            throw new RuntimeException(e);
+        }
+        if (company == null) {
+            throw new ParseFileException("Add report, mistake in id company in file");
+        }
+
+        List<Company> listCompany = findCompanyByUserId(con, currentUser.getId());
+        for (Company tempCompany : listCompany) {
+            if (tempCompany.getId() == company.getId()) {
+                try (PreparedStatement preparedStatement = con.prepareStatement(INSERT_REPORT, Statement.RETURN_GENERATED_KEYS)) {
+                    int k = 1;
+                    preparedStatement.setInt(k++, report.getCompany().getId());
+                    preparedStatement.setInt(k++, report.getReportType().getId());
+                    preparedStatement.setInt(k++, report.getFinancialIncome());
+                    preparedStatement.setInt(k++, report.getTaxAmount());
+                    preparedStatement.setString(k++, report.getDescription());
+                    preparedStatement.setInt(k++, currentUser.getId());
+                    preparedStatement.setString(k++, "report Body");
+                    preparedStatement.setInt(k, 0);
+                    if (preparedStatement.executeUpdate() > 0) {
+                        ResultSet rs = preparedStatement.getGeneratedKeys();
+                        if (rs.next()) {
+                            int reportId = rs.getInt(1);
+                            report.setId(reportId);
+                        }
+                    }
                 }
             }
         }

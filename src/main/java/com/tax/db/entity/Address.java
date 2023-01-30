@@ -104,11 +104,12 @@ public class Address implements Serializable {
     }
 
     public void setBuildingLetter(String buildingLetter) {
+        if (buildingLetter == null) buildingLetter = "";
         if (buildingLetter.length() > 2) {
             throw new IllegalArgumentException("Illegal building letter value, current value is long (" + buildingLetter + ")");
-        } else {
-            this.buildingLetter = buildingLetter;
         }
+        this.buildingLetter = buildingLetter;
+
     }
 
     public String getOffice() {
@@ -131,11 +132,12 @@ public class Address implements Serializable {
     }
 
     public void setOfficeLetter(String officeLetter) {
+        if (officeLetter == null) officeLetter = "";
         if (officeLetter.length() > 2) {
             throw new IllegalArgumentException("Illegal office letter value, current value is long (" + officeLetter + ")");
-        } else {
-            this.officeLetter = officeLetter;
         }
+        this.officeLetter = officeLetter;
+
     }
 
     @Override

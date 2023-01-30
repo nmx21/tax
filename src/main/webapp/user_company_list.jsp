@@ -78,7 +78,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="buildingLetter" class="form-label"><fmt:message key="letter" bundle="${msg}"/></label>
-                                <input type="text" class="form-control" id="buildingLetter" name="buildingLetter" required minlength="1">
+                                <input type="text" class="form-control" id="buildingLetter" name="buildingLetter">
                             </div>
                             <div class="mb-3">
                                 <label for="office" class="form-label"><fmt:message key="companyoffice" bundle="${msg}"/></label>
@@ -86,7 +86,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="officeLetter" class="form-label"><fmt:message key="officeletter" bundle="${msg}"/></label>
-                                <input type="text" class="form-control" id="officeLetter" name="officeLetter" required minlength="1">
+                                <input type="text" class="form-control" id="officeLetter" name="officeLetter">
                             </div>
                             <div class="mb-3">
                                 <label for="isActual" class="form-label"><fmt:message key="isactualaddress" bundle="${msg}"/></label>

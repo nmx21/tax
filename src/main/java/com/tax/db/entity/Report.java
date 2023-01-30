@@ -78,11 +78,13 @@ public class Report implements Serializable {
     }
 
     public void setComment(String comment) {
+        if (comment == null) {
+            comment = "";
+        }
         if (comment.length() > 10000) {
             throw new IllegalArgumentException("Illegal comment value, current value is long (more than 10001 symbol)");
-        } else {
-            this.comment = comment;
         }
+        this.comment = comment;
     }
 
     public Date getDateCreate() {
