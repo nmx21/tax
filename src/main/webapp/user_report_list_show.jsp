@@ -53,7 +53,7 @@
                     <span class="d-block p-1 bg-primary">
                         <h4><fmt:message key="uploadreport" bundle="${msg}"/>:</h4>
                         <form action="update" method="post" enctype="multipart/form-data">
-                            <input type="file" name="file" value="" accept=".xml,.json" />
+                            <input type="file" name="file" value="" accept=".xml,.json" required/>
                             <input type="submit" value="<fmt:message key="upload" bundle="${msg}"/>" />
                         </form>
                     </span>

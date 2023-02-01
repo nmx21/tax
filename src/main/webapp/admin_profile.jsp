@@ -35,11 +35,11 @@
                     <form action="controller" method="post">
                         <div class="mb-3">
                             <label for="email" class="form-label"><fmt:message key="youremail" bundle="${msg}"/></label>
-                            <input type="email" class="form-control" id="email" name="email" value="${sessionScope.currentUser.email}" required>
+                            <input type="email" class="form-control" id="email" name="email" value="${sessionScope.currentUser.email}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label"><fmt:message key="password" bundle="${msg}"/></label>
-                            <input type="password" class="form-control" id="password" name="password"  minlength="4" maxlength="10">
+                            <input type="password" class="form-control" id="password" name="password"  minlength="4" maxlength="32" pattern="[\w]+">
                         </div>
                         <div class="mp-3">
                             <input name="command" value="editProfile" type="hidden">

@@ -49,44 +49,44 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="name" class="form-label"><fmt:message key="companyname" bundle="${msg}"/></label>
-                                <input type="text" class="form-control" id="name" name="name" required minlength="1">
+                                <label for="name" class="form-label"><fmt:message key="companyname" bundle="${msg}" />></label>
+                                <input type="text" class="form-control" id="name" name="name" minlength="1" maxlength="45" required>
                             </div>
                             <div class="mb-3">
                                 <label for="inn" class="form-label"><fmt:message key="inn" bundle="${msg}"/></label>
-                                <input type="text" class="form-control" id="inn" name="inn" required minlength="1">
+                                <input type="text" class="form-control" id="inn" name="inn" minlength="8" maxlength="10" pattern="[\d]+" required>
                             </div>
                             <div class="mb-3">
                                 <label for="country" class="form-label"><fmt:message key="companycountry" bundle="${msg}"/></label>
-                                <input type="text" class="form-control" id="country" name="country" required minlength="1">
+                                <input type="text" class="form-control" id="country" name="country" minlength="1" maxlength="100" required>
                             </div>
                             <div class="mb-3">
                                 <label for="region" class="form-label"><fmt:message key="companystate" bundle="${msg}"/></label>
-                                <input type="text" class="form-control" id="region" name="region" required minlength="1">
+                                <input type="text" class="form-control" id="region" name="region"  minlength="1" maxlength="100" required>
                             </div>
                             <div class="mb-3">
                                 <label for="city" class="form-label"><fmt:message key="companycity" bundle="${msg}"/></label>
-                                <input type="text" class="form-control" id="city" name="city" required minlength="1">
+                                <input type="text" class="form-control" id="city" name="city"  minlength="1" maxlength="100" required>
                             </div>
                             <div class="mb-3">
                                 <label for="street" class="form-label"><fmt:message key="companystreet" bundle="${msg}"/></label>
-                                <input type="text" class="form-control" id="street" name="street" required minlength="1">
+                                <input type="text" class="form-control" id="street" name="street"  minlength="1" maxlength="100" required>
                             </div>
                             <div class="mb-3">
                                 <label for="building" class="form-label"><fmt:message key="companybuilding" bundle="${msg}"/></label>
-                                <input type="number" class="form-control" id="building" name="building" required minvalue="1" value="1">
+                                <input type="number" class="form-control" id="building" name="building" minvalue="1" maxvalue="99999" required>
                             </div>
                             <div class="mb-3">
                                 <label for="buildingLetter" class="form-label"><fmt:message key="letter" bundle="${msg}"/></label>
-                                <input type="text" class="form-control" id="buildingLetter" name="buildingLetter">
+                                <input type="text" class="form-control" id="buildingLetter" name="buildingLetter" maxlength="2" pattern="[\w]+">
                             </div>
                             <div class="mb-3">
                                 <label for="office" class="form-label"><fmt:message key="companyoffice" bundle="${msg}"/></label>
-                                <input type="number" class="form-control" id="office" name="office" required minvalue="1" value="1">
+                                <input type="number" class="form-control" id="office" name="office" minvalue="1" required>
                             </div>
                             <div class="mb-3">
                                 <label for="officeLetter" class="form-label"><fmt:message key="officeletter" bundle="${msg}"/></label>
-                                <input type="text" class="form-control" id="officeLetter" name="officeLetter">
+                                <input type="text" class="form-control" id="officeLetter" name="officeLetter" maxlength="2" pattern="[\w]+">
                             </div>
                             <div class="mb-3">
                                 <label for="isActual" class="form-label"><fmt:message key="isactualaddress" bundle="${msg}"/></label>

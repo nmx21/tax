@@ -37,11 +37,11 @@
                             </div>
                             <div class="mb-3">
                                 <label for="login" class="form-label"><fmt:message key="username" bundle="${msg}"/></label>
-                                <input type="text" class="form-control" name="login" id="login" minlength="4" maxlength="10" required>
+                                <input type="text" class="form-control" name="login" id="login" minlength="4" maxlength="16" pattern="[\w]+" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label"><fmt:message key="password"  bundle="${msg}"/></label>
-                                <input type="password" class="form-control" name="password" id="password" minlength="4" maxlength="32" required>
+                                <input type="password" class="form-control" name="password" id="password" minlength="4" maxlength="32" pattern="[\w]+" required>
                             </div>
                             <input value=<fmt:message key="enter"  bundle="${msg}"/> type="submit">
                         </form>

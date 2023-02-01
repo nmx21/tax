@@ -73,7 +73,7 @@
                                             <fmt:message key="disable" bundle="${msg}"/>
                                         </label>
                                     </div>
-                                    <textarea id="comment" disabled name="comment"></textarea>
+                                    <textarea id="comment" disabled name="comment" maxlength="10001"></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><fmt:message key="return" bundle="${msg}"/></button>
