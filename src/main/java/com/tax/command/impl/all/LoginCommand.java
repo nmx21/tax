@@ -15,8 +15,11 @@ public class LoginCommand implements Command {
         req.getSession().removeAttribute("message");
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-
         User user = UserManager.getInstance().findUser(login);
+        if ( user == null){
+            req.getSession().setAttribute("message", "Illegal auth");
+            return "index.jsp";
+        }
         if (user.getPassword().equals(password)) {
             req.getSession().setAttribute("currentUser", user);
             req.getSession().setAttribute("isAuth", "true");
@@ -28,9 +31,8 @@ public class LoginCommand implements Command {
                 req.getSession().setAttribute("status", "user");
                 return "client_page.jsp";
             }
-        } else {
-            req.getSession().setAttribute("message", "Illegal auth");
-            return "index.jsp";
         }
+        req.getSession().setAttribute("message", "Illegal auth");
+        return "index.jsp";
     }
 }
