@@ -26,6 +26,8 @@
     <body>
         <jsp:include page="./inc/client_menu.jsp"/>
         <jsp:include page="./inc/header.jsp"/>
+        <p class="text-danger">${sessionScope.message}</p>
+        <%  session.removeAttribute( "message");    %>
         <div class="container">
             <div class="row">
                 <div class="col-9">

@@ -31,6 +31,7 @@
                     <div class="col-sm"></div>
                         <div class="col-sm">
                             <p class="text-danger">${sessionScope.message}</p>
+                            <%  session.removeAttribute( "message");    %>
                             <form action="controller" method="post">
                             <div class="mp-3">
                                 <input name="command" value="login" type="hidden">

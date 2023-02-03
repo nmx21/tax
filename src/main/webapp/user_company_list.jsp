@@ -116,6 +116,8 @@
                     <a href ="controller?command=userCompanyList"><fmt:message key="refresh" bundle="${msg}"/></a><br />
                 </div>
                 <div id="example_wrapper" class="dataTables_wrapper">
+                <p class="text-danger">${sessionScope.message}</p>
+                <%  session.removeAttribute( "message");    %>
                     <table id="table" class="display dataTable" style="width:100%">
                         <thead>
                             <tr>

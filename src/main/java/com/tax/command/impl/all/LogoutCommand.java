@@ -14,6 +14,7 @@ public class LogoutCommand implements com.tax.command.Command {
         req.getSession().removeAttribute("status");
         req.getSession().removeAttribute("company");
         req.getSession().removeAttribute("company_data");
+        req.getSession().removeAttribute("company_info");
         req.getSession().removeAttribute("user_info");
         return "index.jsp";
     }

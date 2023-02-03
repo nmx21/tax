@@ -11,7 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 public class CreateUsersCommand implements Command {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
-        UserManager.getInstance().createUsers(new User(req.getParameter("login"),req.getParameter("password")));
+        String login = req.getParameter("login");
+        String password = req.getParameter("password");
+        String email = req.getParameter("email");
+        if (login.isBlank()||password.isBlank()|| email.isBlank()){
+
+            return "controller?command=registrationForm";
+        }
+        User user = new User(login,password,email);
+        UserManager.getInstance().createUsers(user);
         return "controller?command=listUsers";
     }
 }

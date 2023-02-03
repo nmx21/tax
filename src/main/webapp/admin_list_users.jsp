@@ -16,6 +16,8 @@
         <jsp:include page="./inc/header.jsp"/>
         <jsp:include page="./inc/admin_menu.jsp"/>
         <br>
+        <p class="text-danger">${sessionScope.message}</p>
+        <%  session.removeAttribute( "message");    %>
         <div>
             <jsp:include page="./inc/admin_user_list_table.jsp"/>
         </div>

@@ -26,6 +26,8 @@
         <jsp:include page="./inc/header.jsp"/>
         <jsp:include page="./inc/admin_menu.jsp"/>
         <br>
+        <p class="text-danger">${sessionScope.message}</p>
+        <%  session.removeAttribute( "message");    %>
         <div>
             <div id="example_wrapper" class="dataTables_wrapper">
                 <jsp:include page="./inc/admin_reports_table.jsp"/>

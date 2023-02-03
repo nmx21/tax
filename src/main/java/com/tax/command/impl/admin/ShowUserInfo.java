@@ -9,24 +9,31 @@ import com.tax.logic.UserManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Objects;
 
 public class ShowUserInfo implements Command {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
-        if (req.getParameter("id").equals(""))return "error.jsp";
-        User user_for_detail = new User();
-        user_for_detail.setId(Integer.parseInt(req.getParameter("id")));
-        req.getSession().setAttribute("user_info", UserManager.getInstance().findUserById(user_for_detail.getId()));
-        req.getSession().setAttribute("company", CompanyManager.getInstance().findCompanyByUserId(user_for_detail.getId()));
-        req.getSession().setAttribute("reports", ReportManager.getInstance().findAllReportsByUser(user_for_detail));
-        return "show_user_info.jsp";
-    }
-
-    private Boolean validate(String id) {
-        int id_value = Integer.parseInt(id);
-        if (id_value < 0) {
-            return false;
+        String userId = req.getParameter("id");
+        if (userId == null || Objects.equals(userId, "")) {
+            req.getSession().setAttribute("message", "ID user can`t be blank!");
+            return "admin_list_users.jsp";
         }
-        return true;
+        if (Integer.parseInt(userId) > 0) {
+            User user = new User();
+            user.setId(Integer.parseInt(userId));
+            List<User> users = UserManager.getInstance().findAllUsers();
+            for (User tempUser : users) {
+                if (tempUser.getId() == user.getId()) {
+                    req.getSession().setAttribute("user_info", UserManager.getInstance().findUserById(tempUser.getId()));
+                    req.getSession().setAttribute("company", CompanyManager.getInstance().findCompanyByUserId(tempUser.getId()));
+                    req.getSession().setAttribute("reports", ReportManager.getInstance().findAllReportsByUser(tempUser));
+                    return "show_user_info.jsp";
+                }
+            }
+        }
+        req.getSession().setAttribute("message", "No user with this ID!");
+        return "admin_list_users.jsp";
     }
 }

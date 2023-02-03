@@ -24,8 +24,11 @@
         <title>Company list</title>
     </head>
 <body>
-<jsp:include page="./inc/header.jsp"/>
-<jsp:include page="./inc/admin_menu.jsp"/><br>
+    <jsp:include page="./inc/header.jsp"/>
+    <jsp:include page="./inc/admin_menu.jsp"/><br>
+    <br>
+    <p class="text-danger">${sessionScope.message}</p>
+    <%  session.removeAttribute( "message");    %>
     <div>
         <jsp:include page="./inc/admin_company_list_table.jsp"/>
     </div>
