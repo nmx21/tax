@@ -7,11 +7,12 @@ import com.tax.logic.UserManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 
 public class EditProfileCommand implements Command {
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException, SQLException {
         User user = new User();
         User currentUser;
         currentUser = (User) req.getSession().getAttribute("currentUser");

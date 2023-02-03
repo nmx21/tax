@@ -27,114 +27,66 @@ public class UserManager {
         return instance;
     }
 
-    public User findUser(String username) throws DBException {
+    public User findUser(String username) throws SQLException {
         try (Connection con = connectionPool.getConnection()) {
             return connectionPool.findUser(con, username);
-        } catch (SQLException ex) {
-            log.error("Error in findUser  ", ex);
-            throw new DBException("Cannot find user", ex);
         }
     }
 
-    public void createUsers(User user) throws DBException {
-        Connection con = null;
-        try {
-            con = connectionPool.getConnection();
-            con.setTransactionIsolation(
-                    Connection.TRANSACTION_READ_COMMITTED);
-            con.setAutoCommit(false);
-            if (findUser(user.getUsername()) == null) {
-                connectionPool.createUser(con, user);
-            }
-            con.commit();
-        } catch (SQLException ex) {
-            log.error("Error in createUser  ", ex);
-            if (con != null) {
-                try {
-                    con.rollback();
-                } catch (SQLException e) {
-                    log.error("Error in findUser rollback ", ex);
-                }
-            }
-            log.error("Error in createUser  ", ex);
-            throw new DBException("Cannot create users", ex);
+    public void createUsers(User user) throws DBException, SQLException {
+        Connection con;
+        con = connectionPool.getConnection();
+        con.setTransactionIsolation(
+                Connection.TRANSACTION_READ_COMMITTED);
+        con.setAutoCommit(false);
+        if (findUser(user.getUsername()) == null) {
+            connectionPool.createUser(con, user);
         }
+        con.commit();
     }
 
-    public List<User> findAllUsers() throws DBException {
+    public List<User> findAllUsers() throws SQLException {
         try (Connection con = connectionPool.getConnection()) {
             return connectionPool.findAllUsers(con);
-        } catch (SQLException ex) {
-            log.error("Error in findAllUsers  ", ex);
-            throw new DBException("Cannot find all users", ex);
         }
     }
 
-    public void updateUser(User user) throws DBException {
+    public void updateUser(User user) throws SQLException {
         Connection con = null;
-        try {
-            boolean changeEmail = false;
-            boolean changePassword = false;
-            con = connectionPool.getConnection();
-            con.setTransactionIsolation(
-                    Connection.TRANSACTION_READ_COMMITTED);
-            con.setAutoCommit(false);
+        boolean changeEmail = false;
+        boolean changePassword = false;
+        con = connectionPool.getConnection();
+        con.setTransactionIsolation(
+                Connection.TRANSACTION_READ_COMMITTED);
+        con.setAutoCommit(false);
 
-            if (user.getEmail() != null) {
-                if (user.getEmail().equals("")) {
-                } else {
-                    changeEmail = connectionPool.updateUserEmail(con, user.getEmail(), user.getId());
-                }
+        if (user.getEmail() != null) {
+            if (!user.getEmail().equals("")) {
+                changeEmail = connectionPool.updateUserEmail(con, user.getEmail(), user.getId());
             }
-            if (user.getPassword() != null) {
-                if (!user.getPassword().equals("")) {
-                    changePassword = connectionPool.updateUserPassword(con, user.getPassword(), user.getId());
-                }
-            }
-            con.commit();
-            if (!changeEmail || !changePassword) log.warn("Email or Password not changed");
-        } catch (SQLException ex) {
-            log.error("Error in updateUser  ", ex);
-            if (con != null) {
-                try {
-                    con.rollback();
-                } catch (SQLException e) {
-                    log.error("Error in updateUser rollback  ", ex);
-                }
-            }
-            throw new DBException("Cannot update users", ex);
         }
+        if (user.getPassword() != null) {
+            if (!user.getPassword().equals("")) {
+                changePassword = connectionPool.updateUserPassword(con, user.getPassword(), user.getId());
+            }
+        }
+        con.commit();
+        if (!changeEmail || !changePassword) log.warn("Email or Password not changed");
     }
 
-    public User findUserById(int id) throws DBException {
+    public User findUserById(int id) throws SQLException {
         try (Connection con = connectionPool.getConnection()) {
             return connectionPool.findUserById(con, id);
-        } catch (SQLException ex) {
-            log.error("Error in findUserById  ", ex);
-            throw new DBException("Cannot find user", ex);
         }
     }
 
-    public void addLoginTime(User user) throws DBException {
+    public void addLoginTime(User user) throws DBException, SQLException {
         Connection con = null;
-        try {
-            con = connectionPool.getConnection();
-            con.setTransactionIsolation(
-                    Connection.TRANSACTION_READ_COMMITTED);
-            con.setAutoCommit(false);
-            connectionPool.addLoginTime(con, user);
-            con.commit();
-        } catch (SQLException ex) {
-            log.error("Error in addLoginTime  ", ex);
-            if (con != null) {
-                try {
-                    con.rollback();
-                } catch (SQLException e) {
-                    log.error("Error in addLoginTime rollback  ", ex);
-                    e.printStackTrace();
-                }
-            }
-            throw new DBException("Cannot add login time", ex);
-        }
+        con = connectionPool.getConnection();
+        con.setTransactionIsolation(
+                Connection.TRANSACTION_READ_COMMITTED);
+        con.setAutoCommit(false);
+        connectionPool.addLoginTime(con, user);
+        con.commit();
     }
 }

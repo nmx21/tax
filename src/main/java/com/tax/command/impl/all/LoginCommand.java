@@ -7,11 +7,12 @@ import com.tax.logic.UserManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 
 public class LoginCommand implements Command {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp)
-            throws DBException {
+            throws DBException, SQLException {
         req.getSession().removeAttribute("message");
         String login = req.getParameter("login");
         String password = req.getParameter("password");

@@ -30,72 +30,52 @@ public class ReportManager {
         return instance;
     }
 
-    public ReportType findReportTypeById(int reportTypeId) throws DBException {
+    public ReportType findReportTypeById(int reportTypeId) throws SQLException {
         try (Connection con = connectionPool.getConnection()) {
             return connectionPool.findReportTypeById(con, reportTypeId);
-        } catch (SQLException ex) {
-            log.error("Error in findReportTypeById  ", ex);
-            throw new DBException("Cannot find report type", ex);
         }
     }
 
-    public ReportStatus findReportStatusById(int reportStatusId) throws DBException {
+    public ReportStatus findReportStatusById(int reportStatusId) throws DBException, SQLException {
         try (Connection con = connectionPool.getConnection()) {
             return connectionPool.findReportStatusById(con, reportStatusId);
-        } catch (SQLException ex) {
-            log.error("Error in findReportStatusById  ", ex);
-            throw new DBException("Cannot find report type", ex);
         }
     }
 
 
-    public void saveReport(User currentUser, Report report) throws DBException {
+    public void saveReport(User currentUser, Report report) throws DBException, SQLException, ParseFileException {
         Connection con;
-        try {
-            con = connectionPool.getConnection();
-            con.setAutoCommit(false);
-            List<Report> reportList = connectionPool.findAllReports(con);
-            for (Report reportOne : reportList
-            ) {
-                if (reportOne.equals(report)) return;
-            }
-            connectionPool.createReport(con, report, currentUser);
-            con.commit();
-            con.setAutoCommit(true);
-        } catch (SQLException | ParseFileException ex) {
-            log.error("Error in saveReport  ", ex);
-            throw new DBException("Cannot create report", ex);
+        con = connectionPool.getConnection();
+        con.setAutoCommit(false);
+        List<Report> reportList = connectionPool.findAllReports(con);
+        for (Report reportOne : reportList
+        ) {
+            if (reportOne.equals(report)) return;
         }
+        connectionPool.createReport(con, report, currentUser);
+        con.commit();
+        con.setAutoCommit(true);
     }
 
-    public List<Report> findAllReportsByUser(User curentUser) throws DBException {
+    public List<Report> findAllReportsByUser(User curentUser) throws DBException, SQLException {
         try (Connection con = connectionPool.getConnection()) {
             return connectionPool.findAllReportsByUser(con, curentUser);
-        } catch (SQLException ex) {
-            log.error("Error in findAllReportsByUser  ", ex);
-            throw new DBException("Cannot find all reports by user", ex);
         }
     }
 
-    public Report findReportById(int id) throws DBException {
+    public Report findReportById(int id) throws DBException, SQLException {
         try (Connection con = connectionPool.getConnection()) {
             return connectionPool.findReportById(con, id);
-        } catch (SQLException ex) {
-            log.error("Error in findReportById  ", ex);
-            throw new DBException("Cannot find report by id", ex);
         }
     }
 
-    public List<Report> findReportByCompanyId(int id) throws DBException {
+    public List<Report> findReportByCompanyId(int id) throws DBException, SQLException {
         try (Connection con = connectionPool.getConnection()) {
             return connectionPool.findReportsByCompanyId(con, id);
-        } catch (SQLException | DBException ex) {
-            log.error("Error in findReportByCompanyId  ", ex);
-            throw new DBException("Cannot find all reports by company id", ex);
         }
     }
 
-    public int changeStatusReport(String operation, Integer reportId, String comment) throws DBException {
+    public int changeStatusReport(String operation, Integer reportId, String comment) throws DBException, SQLException {
         int newStatus;
         switch (operation) {
             case ("accept"):
@@ -111,33 +91,21 @@ public class ReportManager {
         int currentReportStatus = ReportManager.getInstance().findReportById(reportId).getReportStatus().getId();
         if (currentReportStatus == newStatus) return 0;
         Connection con;
-        try {
-            con = connectionPool.getConnection();
-            connectionPool.updateReportStatus(con, reportId, newStatus, comment);
-
-        } catch (SQLException ex) {
-            log.error("Error in changeStatusReport  ", ex);
-            throw new DBException("Cannot update status report", ex);
-        }
+        con = connectionPool.getConnection();
+        connectionPool.updateReportStatus(con, reportId, newStatus, comment);
         return 1;
     }
 
-    public void updateReport(User currentUser, Report parseFile) throws DBException {
+    public void updateReport(Report parseFile) throws SQLException {
         try (Connection con = connectionPool.getConnection()) {
             connectionPool.updateReport(con, parseFile);
-        } catch (SQLException ex) {
-            log.error("Error in updateReport  ", ex);
-            throw new DBException("Cannot update report", ex);
         }
     }
 
 
-    public List<Report> findAllReports() throws DBException {
+    public List<Report> findAllReports() throws DBException, SQLException {
         try (Connection con = connectionPool.getConnection()) {
             return connectionPool.findAllReports(con);
-        } catch (SQLException ex) {
-            log.error("Error in findAllReports  ", ex);
-            throw new DBException("Cannot find all users", ex);
         }
     }
 }

@@ -7,11 +7,12 @@ import com.tax.logic.UserManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 
 public class RegistrationCommand implements Command {
     private static final String MESSAGE = "message";
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException, SQLException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         String email = req.getParameter("email");

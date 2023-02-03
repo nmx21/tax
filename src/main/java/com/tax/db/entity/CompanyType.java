@@ -9,11 +9,6 @@ public class CompanyType implements Serializable {
     public CompanyType() {
     }
 
-    public CompanyType(int id, String type) {
-        setId(id);
-        setType(type);
-    }
-
     public int getId() {
         return id;
     }

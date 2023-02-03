@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.SQLException;
 import java.util.UUID;
 
 
@@ -41,7 +42,6 @@ public class UploadPatchServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
         try {
-            User currentUser = (User) req.getSession().getAttribute("currentUser");
             Part filePart = req.getPart("file");
             String fileName = filePart.getSubmittedFileName();
             InputStream is = filePart.getInputStream();
@@ -56,12 +56,12 @@ public class UploadPatchServlet extends HttpServlet {
             switch (typeFile) {
                 case "xml":
                     XMLRead xmlRead = new XMLRead();
-                    ReportManager.getInstance().updateReport(currentUser, xmlRead.parseFile(pathToFile));
+                    ReportManager.getInstance().updateReport(xmlRead.parseFile(pathToFile));
                     file.delete();
                     break;
                 case "json":
                     JSONRead jsonRead = new JSONRead();
-                    ReportManager.getInstance().updateReport(currentUser, jsonRead.parseFile(pathToFile));
+                    ReportManager.getInstance().updateReport(jsonRead.parseFile(pathToFile));
                     file.delete();
                     break;
                 default:
@@ -69,7 +69,7 @@ public class UploadPatchServlet extends HttpServlet {
                     log.error("Error in doPost - file type is not valid ");
                     throw new ParseFileException("Error in file type");
             }
-        } catch (IOException | ParseException | DBException e) {
+        } catch (IOException | ParseException | SQLException e) {
             log.error("Error in doPost:  ", e);
             throw new ParseFileException("Error parce file", e);
         }

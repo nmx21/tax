@@ -9,12 +9,13 @@ import com.tax.logic.UserManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
 public class ShowUserInfo implements Command {
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException, SQLException {
         String userId = req.getParameter("id");
         if (userId == null || Objects.equals(userId, "")) {
             req.getSession().setAttribute("message", "ID user can`t be blank!");

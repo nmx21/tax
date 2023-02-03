@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -71,13 +72,10 @@ public class UploadServlet extends HttpServlet {
                     log.error("Error in doPost - file type is not valid ");
                     throw new ParseFileException("Error parse file");
             }
-        } catch (IOException e) {
-            log.error("Error (IOException) in doPost ", e);
-            throw new ParseFileException("Error (IOException) parce file", e);
         } catch (ParseException e) {
             log.error("Error (ParseException) in doPost  ", e);
             throw new ParseFileException("Error (ParseException) parce file", e);
-        } catch (DBException e) {
+        } catch (DBException | SQLException e) {
             log.error("Error (DBException) in doPost  ", e);
             throw new ParseFileException("Error (DBException) parce file", e);
         }

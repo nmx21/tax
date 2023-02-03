@@ -28,62 +28,37 @@ public class CompanyManager {
         return instance;
     }
 
-    public Company findCompanyById(int companyId) throws DBException {
+    public Company findCompanyById(int companyId) throws DBException, SQLException {
         try (Connection con = connectionPool.getConnection()) {
             return connectionPool.findCompanyById(con, companyId);
-        } catch (SQLException ex) {
-            log.error("Error in findCompanyById  ", ex);
-            throw new DBException("Cannot find company", ex);
         }
     }
 
-    public void createCompanies(User user, Company company) throws DBException {
-        Connection con = null;
-        try {
-            con = connectionPool.getConnection();
-            con.setTransactionIsolation(
-                    Connection.TRANSACTION_READ_COMMITTED);
-            con.setAutoCommit(false);
-            connectionPool.createCompany(con, company, user);
-            con.commit();
-        } catch (SQLException ex) {
-            log.error("Error in createCompanies  ", ex);
-            if (con != null) {
-                try {
-                    con.rollback();
-                } catch (SQLException e) {
-                    log.error("Error in createCompanies rollback  ", ex);
-                    e.printStackTrace();
-                }
-            }
-            throw new DBException("Cannot create companies", ex);
-        }
+    public void createCompanies(User user, Company company) throws SQLException {
+        Connection con;
+        con = connectionPool.getConnection();
+        con.setTransactionIsolation(
+                Connection.TRANSACTION_READ_COMMITTED);
+        con.setAutoCommit(false);
+        connectionPool.createCompany(con, company, user);
+        con.commit();
     }
 
-    public List<Company> findAllCompany() throws DBException {
+    public List<Company> findAllCompany() throws DBException, SQLException {
         try (Connection con = connectionPool.getConnection()) {
             return connectionPool.findAllCompanies(con);
-        } catch (SQLException ex) {
-            log.error("Error in findAllCompany ", ex);
-            throw new DBException("Cannot find all companies", ex);
         }
     }
 
-    public CompanyType findCompanyTypeById(int companyTypeId) throws DBException {
+    public CompanyType findCompanyTypeById(int companyTypeId) throws SQLException {
         try (Connection con = connectionPool.getConnection()) {
             return connectionPool.findCompanyTypeById(con, companyTypeId);
-        } catch (SQLException ex) {
-            log.error("Error in findCompanyTypeById ", ex);
-            throw new DBException("Cannot find company type", ex);
         }
     }
 
-    public Object findCompanyByUserId(int id) throws DBException {
+    public List<Company> findCompanyByUserId(int id) throws DBException, SQLException {
         try (Connection con = connectionPool.getConnection()) {
             return connectionPool.findCompanyByUserId(con, id);
-        } catch (SQLException ex) {
-            log.error("Error in findCompanyByUserId ", ex);
-            throw new DBException("Cannot find company by user id", ex);
         }
     }
 }
