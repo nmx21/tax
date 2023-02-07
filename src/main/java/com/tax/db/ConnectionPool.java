@@ -310,13 +310,11 @@ public class ConnectionPool {
             if (rs.next()) {
                 companyData = extractCompany(rs);
             }
-        } catch (DBException e) {
-            throw new RuntimeException(e);
         }
         return companyData;
     }
 
-    public Company findCompanyById(Connection con, int company) throws SQLException, DBException {
+    public Company findCompanyById(Connection con, int company) throws SQLException {
         Company companyData = null;
         try (PreparedStatement preparedStatement = con.prepareStatement(FIND_COMPANY_BY_ID)) {
             preparedStatement.setInt(1, company);
@@ -328,7 +326,7 @@ public class ConnectionPool {
         return companyData;
     }
 
-    private Company extractCompany(ResultSet rs) throws SQLException, DBException {
+    private Company extractCompany(ResultSet rs) throws SQLException {
         CompanyType companyType = new CompanyType();
         companyType.setId(rs.getInt("type_id"));
         companyType.setType(rs.getString("type"));
@@ -382,7 +380,7 @@ public class ConnectionPool {
         return companyType;
     }
 
-    public List<Company> findAllCompanies(Connection con) throws SQLException, DBException {
+    public List<Company> findAllCompanies(Connection con) throws SQLException {
         List<Company> companies = new ArrayList<>();
         try (Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(FIND_ALL_COMPANIES)) {
             while (rs.next()) {
@@ -470,13 +468,9 @@ public class ConnectionPool {
         return reportType;
     }
 
-    public void createReport(Connection con, Report report, User currentUser) throws SQLException, ParseFileException, DBException {
+    public void createReport(Connection con, Report report, User currentUser) throws SQLException, ParseFileException {
         Company company;
-        try {
-            company = findCompanyById(con, report.getCompany().getId());
-        } catch (DBException e) {
-            throw new DBException("Can`t find company by ID",e);
-        }
+        company = findCompanyById(con, report.getCompany().getId());
         if (company == null) {
             throw new ParseFileException("Add report, mistake in id company in file");
         }
@@ -571,7 +565,7 @@ public class ConnectionPool {
         }
     }
 
-    public void updateReport(Connection con, Report parseFile) throws SQLException {
+    public boolean updateReport(Connection con, Report parseFile) throws SQLException {
         try (PreparedStatement preparedStatement = con.prepareStatement(UPDATE_REPORT, Statement.RETURN_GENERATED_KEYS)) {
             int k = 1;
             preparedStatement.setInt(k++, parseFile.getCompany().getId());
@@ -586,12 +580,14 @@ public class ConnectionPool {
                 if (rs.next()) {
                     int reportId = rs.getInt(1);
                     parseFile.setId(reportId);
+                    return true;
                 }
             }
         }
+        return false;
     }
 
-    public List<Company> findCompanyByUserId(Connection con, int id) throws DBException, SQLException {
+    public List<Company> findCompanyByUserId(Connection con, int id) throws SQLException {
         List<Company> companies = new ArrayList<>();
         try (PreparedStatement preparedStatement = con.prepareStatement(FIND_ALL_COMPANY_BY_USER_ID)) {
             preparedStatement.setInt(1, id);

@@ -16,10 +16,14 @@ public class EditReportStatus implements Command {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws DBException, SQLException {
-        if (req.getParameter(OPERATION).equals("accept") || req.getParameter(OPERATION).equals("reject")) {
-            ReportManager.getInstance().changeStatusReport(req.getParameter(OPERATION), Integer.parseInt(req.getParameter("reportId")), req.getParameter("comment"));
-        } else {
-            log.error("There are no command to change status");
+        switch (req.getParameter(OPERATION)) {
+            case "accept":
+            case "reject":
+                log.info(ReportManager.getInstance().changeStatusReport(req.getParameter(OPERATION), Integer.parseInt(req.getParameter("reportId")), req.getParameter("comment")) ? "The status of the report has been updated" : "The status of the report has not been updated");
+                break;
+            default:
+                log.error("There are no command to change status");
+                break;
         }
         return "controller?command=adminReportDetails&id=" + req.getParameter("reportId");
     }

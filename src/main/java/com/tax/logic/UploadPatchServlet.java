@@ -1,8 +1,6 @@
 package com.tax.logic;
 
-import com.tax.exception.DBException;
 import com.tax.exception.ParseFileException;
-import com.tax.db.entity.User;
 import com.tax.logic.parser.impl.JSONRead;
 import com.tax.logic.parser.impl.XMLRead;
 import org.json.simple.parser.ParseException;
@@ -38,6 +36,14 @@ public class UploadPatchServlet extends HttpServlet {
         else return "";
     }
 
+    private static void deleteFile(File file) {
+        if (file.delete()) {
+            log.info("File deleted");
+        } else {
+            log.error("File not delete");
+        }
+    }
+
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
@@ -56,23 +62,29 @@ public class UploadPatchServlet extends HttpServlet {
             switch (typeFile) {
                 case "xml":
                     XMLRead xmlRead = new XMLRead();
-                    ReportManager.getInstance().updateReport(xmlRead.parseFile(pathToFile));
-                    file.delete();
+                    try {
+                        log.info(ReportManager.getInstance().updateReport(xmlRead.parseFile(pathToFile)) ? "The report has been updated" : "The report has not been updated");
+                    } catch (SQLException | ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    deleteFile(file);
                     break;
                 case "json":
                     JSONRead jsonRead = new JSONRead();
-                    ReportManager.getInstance().updateReport(jsonRead.parseFile(pathToFile));
-                    file.delete();
+                    try {
+                        log.info(ReportManager.getInstance().updateReport(jsonRead.parseFile(pathToFile)) ? "The report has been updated" : "The report has not been updated");
+                    } catch (SQLException | ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    deleteFile(file);
                     break;
                 default:
-                    file.delete();
+                    deleteFile(file);
                     log.error("Error in doPost - file type is not valid ");
                     throw new ParseFileException("Error in file type");
             }
-        } catch (IOException | ParseException | SQLException e) {
-            log.error("Error in doPost:  ", e);
-            throw new ParseFileException("Error parce file", e);
+        } finally {
+            resp.sendRedirect("user_report_list_show.jsp");
         }
-        resp.sendRedirect("user_report_list_show.jsp");
     }
 }

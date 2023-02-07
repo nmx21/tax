@@ -39,15 +39,23 @@ public class UploadServlet extends HttpServlet {
         else return "";
     }
 
+    private static void deleteFile(File file) {
+        if (file.delete()) {
+            log.info("File deleted");
+        } else {
+            log.error("File not delete");
+        }
+    }
+
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        log.info("Upload execute, time= {}",  LocalDateTime.now());
+        log.info("Upload execute, time= {}", LocalDateTime.now());
         try {
             Part filePart = req.getPart("file");
             String fileName = filePart.getSubmittedFileName();
             InputStream is = filePart.getInputStream();
-            String imagesAddress = getServletContext().getRealPath("/report_files");
-            String pathToFile = imagesAddress + File.separator + UUID.randomUUID() + fileName;
+            String fileAddress = getServletContext().getRealPath("/report_files");
+            String pathToFile = fileAddress + File.separator + UUID.randomUUID() + fileName;
             Files.copy(is,
                     Paths.get(pathToFile),
                     StandardCopyOption.REPLACE_EXISTING);
@@ -59,27 +67,30 @@ public class UploadServlet extends HttpServlet {
             switch (typeFile) {
                 case "xml":
                     XMLRead xmlRead = new XMLRead();
-                    ReportManager.getInstance().saveReport(currentUser, xmlRead.parseFile(pathToFile));
-                    file.delete();
+                    try {
+                        log.info(ReportManager.getInstance().saveReport(currentUser, xmlRead.parseFile(pathToFile)) ? "The report has been add" : "The report has not been add");
+                    } catch (SQLException | ParseException | DBException e) {
+                        throw new RuntimeException(e);
+                    }
+                    deleteFile(file);
                     break;
                 case "json":
                     JSONRead jsonRead = new JSONRead();
-                    ReportManager.getInstance().saveReport(currentUser, jsonRead.parseFile(pathToFile));
-                    file.delete();
+                    try {
+                        log.info(ReportManager.getInstance().saveReport(currentUser, jsonRead.parseFile(pathToFile)) ? "The report has been add" : "The report has not been add");
+                    } catch (SQLException | ParseException | DBException e) {
+                        throw new RuntimeException(e);
+                    }
+                    deleteFile(file);
                     break;
                 default:
-                    file.delete();
+                    deleteFile(file);
                     log.error("Error in doPost - file type is not valid ");
-                    throw new ParseFileException("Error parse file");
+                    throw new ParseFileException("Error parse file - file type is not valid");
             }
-        } catch (ParseException e) {
-            log.error("Error (ParseException) in doPost  ", e);
-            throw new ParseFileException("Error (ParseException) parce file", e);
-        } catch (DBException | SQLException e) {
-            log.error("Error (DBException) in doPost  ", e);
-            throw new ParseFileException("Error (DBException) parce file", e);
+        } finally {
+            resp.sendRedirect("user_report_list_show.jsp");
         }
-        resp.sendRedirect("user_report_list_show.jsp");
 
     }
 }

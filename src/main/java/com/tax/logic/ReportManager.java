@@ -36,25 +36,26 @@ public class ReportManager {
         }
     }
 
-    public ReportStatus findReportStatusById(int reportStatusId) throws DBException, SQLException {
+    public ReportStatus findReportStatusById(int reportStatusId) throws SQLException {
         try (Connection con = connectionPool.getConnection()) {
             return connectionPool.findReportStatusById(con, reportStatusId);
         }
     }
 
 
-    public void saveReport(User currentUser, Report report) throws DBException, SQLException, ParseFileException {
+    public boolean saveReport(User currentUser, Report report) throws DBException, SQLException, ParseFileException {
         Connection con;
         con = connectionPool.getConnection();
         con.setAutoCommit(false);
         List<Report> reportList = connectionPool.findAllReports(con);
         for (Report reportOne : reportList
         ) {
-            if (reportOne.equals(report)) return;
+            if (reportOne.equals(report)) return false;
         }
         connectionPool.createReport(con, report, currentUser);
         con.commit();
         con.setAutoCommit(true);
+        return true;
     }
 
     public List<Report> findAllReportsByUser(User curentUser) throws DBException, SQLException {
@@ -75,7 +76,7 @@ public class ReportManager {
         }
     }
 
-    public int changeStatusReport(String operation, Integer reportId, String comment) throws DBException, SQLException {
+    public boolean changeStatusReport(String operation, Integer reportId, String comment) throws DBException, SQLException {
         int newStatus;
         switch (operation) {
             case ("accept"):
@@ -89,16 +90,16 @@ public class ReportManager {
                 throw new IllegalArgumentException("Не визначено новий статус репорта");
         }
         int currentReportStatus = ReportManager.getInstance().findReportById(reportId).getReportStatus().getId();
-        if (currentReportStatus == newStatus) return 0;
+        if (currentReportStatus == newStatus) return false;
         Connection con;
         con = connectionPool.getConnection();
         connectionPool.updateReportStatus(con, reportId, newStatus, comment);
-        return 1;
+        return true;
     }
 
-    public void updateReport(Report parseFile) throws SQLException {
+    public boolean updateReport(Report parseFile) throws SQLException {
         try (Connection con = connectionPool.getConnection()) {
-            connectionPool.updateReport(con, parseFile);
+            return connectionPool.updateReport(con, parseFile);
         }
     }
 
